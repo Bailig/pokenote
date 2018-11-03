@@ -7,6 +7,7 @@ import { AppLoading } from 'expo';
 import PropTypes from 'prop-types';
 
 import * as appModule from '../modules/app';
+import * as pokemonModule from '../modules/pokemon';
 import AgainstScreen from './AgainstScreen';
 import CatchScreen from './CatchScreen';
 import {
@@ -17,8 +18,9 @@ const MeScreen = () => <View style={{ flex: 1 }}><Text>MeScreen</Text></View>;
 
 class Screens extends React.Component {
   componentWillMount() {
-    const { loadFont } = this.props;
+    const { loadFont, loadPokemon } = this.props;
     loadFont();
+    loadPokemon();
   }
 
   render() {
@@ -68,6 +70,7 @@ class Screens extends React.Component {
 Screens.propTypes = {
   fontLoaded: PropTypes.bool.isRequired,
   loadFont: PropTypes.func.isRequired,
+  loadPokemon: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -75,4 +78,4 @@ const mapStateToProps = (state) => {
   return { fontLoaded };
 };
 
-export default connect(mapStateToProps, appModule)(Screens);
+export default connect(mapStateToProps, { ...appModule, ...pokemonModule })(Screens);
