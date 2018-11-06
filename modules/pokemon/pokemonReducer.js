@@ -1,5 +1,3 @@
-import _ from 'lodash';
-import { createSelector } from 'reselect';
 import { LOAD_POKEMON } from './pokemonActions';
 
 // reducer
@@ -7,7 +5,7 @@ const initialState = {
   pokemons: null,
   pokemonMoves: null,
   pokemonTypes: null,
-  againstPokemonIds: [],
+  againstPokemonIds: new Array(6).fill(null),
   catchPokemonIds: [],
 };
 
@@ -22,15 +20,3 @@ export default (state = initialState, action = {}) => {
     default: return state;
   }
 };
-
-// selectors
-// const selectAgainstPokemons = createSelector(
-//   s => s.pokemon.againstPokemonIds,
-//   s => s.pokemon.pokemons,
-//   s => s.pokemon.pokemonTypes,
-//   (againstPokemonIds, pokemons, pokemonTypes) => {
-//     if (!againstPokemonIds || !pokemons || !pokemonTypes) return [];
-//     const againstPokemons = _.pick(pokemons, againstPokemonIds);
-
-//   },
-// );
