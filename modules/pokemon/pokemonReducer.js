@@ -5,8 +5,6 @@ const initialState = {
   pokemons: null,
   pokemonMoves: null,
   pokemonTypes: null,
-  againstPokemonIds: new Array(6).fill(null),
-  catchPokemonIds: [],
 };
 
 export default (state = initialState, action = {}) => {

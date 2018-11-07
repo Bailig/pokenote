@@ -1,32 +1,35 @@
 // text styles
-export const SUBTITLE = {
+const subtitle = {
   fontFamily: 'josefin-sans',
   lineHeight: 0,
 };
 
-export const SUBTITLE1 = [SUBTITLE, {
-  fontSize: 16,
-}];
-
-export const SUBTITLE2 = [SUBTITLE, {
-  fontSize: 14,
-}];
-
-export const SUBTITLE3 = [SUBTITLE, {
-  fontSize: 10,
-}];
-
-export const HEADLINE = {
-  fontFamily: 'mali-bold',
-  fontSize: 15,
+export const TEXT_STYLE = {
+  subtitle1: {
+    ...subtitle,
+    fontSize: 16,
+  },
+  subtitle2: {
+    ...subtitle,
+    fontSize: 14,
+  },
+  subtitle3: {
+    ...subtitle,
+    fontSize: 10,
+  },
+  headline: {
+    fontFamily: 'mali-bold',
+    fontSize: 15,
+  },
 };
 
-
 // colors
-export const HIGH_CONTRAST_LIGHT = '#EDF1F2';
-export const LOW_CONTRAST_LIGHT = '#BAC0C4';
-export const HIGH_CONTRAST_DARK = '#1C2833';
-export const LOW_CONTRAST_DARK = '#527394';
+export const COLOR = {
+  highContrastDark: '#1C2833',
+  lowContrastDark: '#527394',
+  highContrastLight: '#EDF1F2',
+  lowContrastLight: '#BAC0C4',
+};
 
 // shadows
 export const elevation = level => ({

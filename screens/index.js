@@ -11,9 +11,7 @@ import * as pokemonModule from '../modules/pokemon';
 import AgainstScreen from './AgainstScreen';
 import FindPokemonScreen from './FindPokemonScreen';
 import CatchScreen from './CatchScreen';
-import {
-  LOW_CONTRAST_LIGHT, HIGH_CONTRAST_LIGHT, LOW_CONTRAST_DARK, elevation, SUBTITLE2,
-} from './commonStyles';
+import { elevation, COLOR, TEXT_STYLE } from './commonStyles';
 
 const MeScreen = () => <View style={{ flex: 1 }}><Text>MeScreen</Text></View>;
 
@@ -27,27 +25,10 @@ class Screens extends React.Component {
   render() {
     const { fontLoaded } = this.props;
     if (!fontLoaded) return <AppLoading />;
-
-    const AgainstFlow = createStackNavigator({
+    const HomeTab = createBottomTabNavigator({
       against: {
         screen: AgainstScreen,
-        navigationOptions: { header: null },
-      },
-      findPokemon: {
-        screen: FindPokemonScreen,
-        navigationOptions: { header: null },
-      },
-    }, {
-      mode: 'modal',
-    });
-
-    const AppNavigator = createBottomTabNavigator({
-      againstFlow: {
-        screen: AgainstFlow,
-        navigationOptions: ({ navigation }) => {
-          const { routes } = navigation.state;
-          return { title: 'Against', tabBarVisible: routes.length <= 1 };
-        },
+        navigationOptions: { title: 'Against' },
       },
       catch: {
         screen: CatchScreen,
@@ -63,7 +44,7 @@ class Screens extends React.Component {
           const { routeName } = navigation.state;
           let iconName;
           switch (routeName) {
-            case 'againstFlow':
+            case 'against':
               iconName = 'hand-rock-o';
               break;
             case 'catch':
@@ -75,19 +56,30 @@ class Screens extends React.Component {
             default:
               break;
           }
-          const iconColor = focused ? HIGH_CONTRAST_LIGHT : LOW_CONTRAST_LIGHT;
+          const iconColor = focused ? COLOR.highContrastLight : COLOR.lowContrastLight;
           return <Icon name={iconName} type="font-awesome" color={iconColor} size={30} />;
         },
       }),
       tabBarOptions: {
-        activeTintColor: HIGH_CONTRAST_LIGHT,
-        inactiveTintColor: LOW_CONTRAST_LIGHT,
-        activeBackgroundColor: LOW_CONTRAST_DARK,
-        inactiveBackgroundColor: LOW_CONTRAST_DARK,
+        activeTintColor: COLOR.highContrastLight,
+        inactiveTintColor: COLOR.lowContrastLight,
+        activeBackgroundColor: COLOR.lowContrastDark,
+        inactiveBackgroundColor: COLOR.lowContrastDark,
         style: [{ height: 56 }, elevation(8)],
-        labelStyle: SUBTITLE2,
+        labelStyle: TEXT_STYLE.subtitle2,
       },
     });
+
+    const AppNavigator = createStackNavigator({
+      home: HomeTab,
+      findPokemon: FindPokemonScreen,
+    }, {
+      navigationOptions: {
+        header: null,
+      },
+      mode: 'modal',
+    });
+
     return <AppNavigator />;
   }
 }

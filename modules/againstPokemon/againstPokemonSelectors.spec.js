@@ -3,7 +3,7 @@ import { Selector } from 'redux-testkit';
 import pokemons from '../../data/output/pokemon.json';
 import pokemonMoves from '../../data/output/pokemonMove.json';
 import pokemonTypes from '../../data/output/pokemonType.json';
-import * as uut from './pokemonSelectors';
+import * as uut from './againstPokemonSelectors';
 
 describe('pokemon selectors', () => {
   const expectedDefenceTypeEffective = {
@@ -25,8 +25,9 @@ describe('pokemon selectors', () => {
           pokemons,
           pokemonMoves,
           pokemonTypes,
+        },
+        againstPokemon: {
           againstPokemonIds: new Array(6).fill(null),
-          catchPokemonIds: [],
         },
       };
       const result = new Array(6).fill(null);
@@ -39,8 +40,9 @@ describe('pokemon selectors', () => {
           pokemons,
           pokemonMoves,
           pokemonTypes,
+        },
+        againstPokemon: {
           againstPokemonIds: ['BULBASAUR', null, null, null, null, null],
-          catchPokemonIds: [],
         },
       };
       const result = [{

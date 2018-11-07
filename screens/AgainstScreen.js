@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Header, AddPokemonButton } from './components';
-import { selectAgainstPokemons } from '../modules/pokemon';
+import { selectAgainstPokemons } from '../modules/againstPokemon';
 
 const AgainstScreen = (props) => {
   const { againstPokemons, navigation } = props;

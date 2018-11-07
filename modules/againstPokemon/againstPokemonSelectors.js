@@ -38,7 +38,7 @@ export const getPokemonTypeIds = (pokemon) => {
 };
 
 export const selectAgainstPokemons = createSelector(
-  s => s.pokemon.againstPokemonIds,
+  s => s.againstPokemon.againstPokemonIds,
   s => s.pokemon.pokemons,
   s => s.pokemon.pokemonTypes,
   (againstPokemonIds, pokemons, pokemonTypes) => {
