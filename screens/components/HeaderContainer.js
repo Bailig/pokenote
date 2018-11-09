@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     right: 0,
     height: 66,
     backgroundColor: COLOR.lowContrastDark,
+    zIndex: 4,
   },
 });
 

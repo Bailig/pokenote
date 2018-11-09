@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { Font } from 'expo';
+import { FETCH_FAIL } from './pokemon';
 
 // actions
 const LOAD_FONT = 'app/LOAD_FONT';
@@ -40,6 +41,11 @@ export default (state = initialState, action = {}) => {
         ...state,
         fontLoaded: false,
         errors: { ...state.errors, loadFontFail: 'Unable to load font.' },
+      };
+    case FETCH_FAIL:
+      return {
+        ...state,
+        errors: { ...state.errors, fetchPokemonFail: 'Network Error.' },
       };
     default: return state;
   }

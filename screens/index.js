@@ -17,9 +17,9 @@ const MeScreen = () => <View style={{ flex: 1 }}><Text>MeScreen</Text></View>;
 
 class Screens extends React.Component {
   componentWillMount() {
-    const { loadFont, loadPokemon } = this.props;
+    const { loadFont, fetchPokemon } = this.props;
     loadFont();
-    loadPokemon();
+    fetchPokemon();
   }
 
   render() {
@@ -88,7 +88,7 @@ class Screens extends React.Component {
 Screens.propTypes = {
   fontLoaded: PropTypes.bool.isRequired,
   loadFont: PropTypes.func.isRequired,
-  loadPokemon: PropTypes.func.isRequired,
+  fetchPokemon: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {

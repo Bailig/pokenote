@@ -1,4 +1,4 @@
-import { LOAD_POKEMON } from './pokemonActions';
+import { FETCH_SUCCESS } from './pokemonActions';
 
 // reducer
 const initialState = {
@@ -10,7 +10,7 @@ const initialState = {
 export default (state = initialState, action = {}) => {
   const { type, payload } = action;
   switch (type) {
-    case LOAD_POKEMON:
+    case FETCH_SUCCESS:
       return {
         ...state,
         ...payload,

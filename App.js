@@ -4,10 +4,14 @@ import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
+import * as firebase from 'firebase';
 
 import Screens from './screens';
 import reducers from './modules';
-import { HIGH_CONTRAST_LIGHT } from './screens/commonStyles';
+import { COLOR } from './screens/commonStyles';
+import { firebaseConfig } from './util/config';
+
+firebase.initializeApp(firebaseConfig);
 
 const store = createStore(
   reducers,
@@ -17,7 +21,7 @@ const store = createStore(
 
 export default () => (
   <Provider store={store}>
-    <View style={{ flex: 1, backgroundColor: HIGH_CONTRAST_LIGHT }}>
+    <View style={{ flex: 1, backgroundColor: COLOR.highContrastLight }}>
       <StatusBar
         barStyle="light-content"
       />
