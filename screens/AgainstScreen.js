@@ -4,14 +4,25 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Header, AddPokemonButton } from './components';
-import { selectAgainstPokemons } from '../modules/againstPokemon';
+import * as againstPokemonModule from '../modules/againstPokemon';
 
 const AgainstScreen = (props) => {
-  const { againstPokemons, navigation } = props;
+  const { againstPokemons, navigation, updateAgainstPokemonIndex } = props;
+
   const handleRenderRow = ({ item, index }) => {
-    if (!item) return <AddPokemonButton onPress={() => navigation.navigate('findPokemon')} />;
+    const handleOnPress = () => {
+      updateAgainstPokemonIndex(index);
+      navigation.navigate('findPokemon');
+    };
+
+    if (!item) return <AddPokemonButton onPress={handleOnPress} />;
     return <View />;
   };
+  handleRenderRow.propTypes = {
+    item: PropTypes.shape().isRequired,
+    index: PropTypes.number.isRequired,
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <Header text="Pokemons to fight against" />
@@ -23,7 +34,7 @@ const AgainstScreen = (props) => {
       />
     </View>
   );
-}
+};
 
 AgainstScreen.defaultProps = {
   againstPokemons: new Array(6).fill(null),
@@ -34,8 +45,15 @@ AgainstScreen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
+  updateAgainstPokemonIndex: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({ againstPokemons: selectAgainstPokemons(state) });
+const mapStateToProps = state => ({
+  againstPokemons: againstPokemonModule.selectAgainstPokemons(state),
+});
 
-export default connect(mapStateToProps)(AgainstScreen);
+const mapDispatchToProps = {
+  updateAgainstPokemonIndex: againstPokemonModule.updateAgainstPokemonIndex,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AgainstScreen);

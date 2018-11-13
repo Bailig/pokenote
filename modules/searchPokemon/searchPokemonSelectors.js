@@ -1,1 +1,3 @@
-export const selectPokemons = state => Object.values(state.pokemon.pokemons);
+import _ from 'lodash';
+
+export const selectPokemons = state => _.orderBy(state.pokemon.pokemons, 'dex');

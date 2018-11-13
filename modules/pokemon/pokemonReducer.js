@@ -1,4 +1,4 @@
-import { FETCH_SUCCESS } from './pokemonActions';
+import { FETCH_SUCCESS, UPDATE } from './pokemonActions';
 
 // reducer
 const initialState = {
@@ -14,6 +14,14 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         ...payload,
+      };
+    case UPDATE:
+      return {
+        ...state,
+        pokemons: {
+          ...state.pokemons,
+          [payload.id]: payload,
+        },
       };
     default: return state;
   }

@@ -1,5 +1,7 @@
 import _ from 'lodash';
 import { Font } from 'expo';
+import * as firebase from 'firebase';
+
 import { FETCH_FAIL } from './pokemon';
 
 // actions
@@ -50,3 +52,14 @@ export default (state = initialState, action = {}) => {
     default: return state;
   }
 };
+
+
+// service
+export const fetch = ref => new Promise(async (resolve, reject) => {
+  try {
+    const snapshot = await firebase.database().ref(ref).once('value');
+    resolve(snapshot.val());
+  } catch (error) {
+    reject(error);
+  }
+});
