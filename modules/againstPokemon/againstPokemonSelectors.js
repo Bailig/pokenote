@@ -1,32 +1,47 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
 
+const getDefenceScalar = ({ pokemonTypeId, pokemonTypeId2, pokemonType }) => {
+  const attackScalar1 = pokemonType.typeEffective.filter(t => t.id === pokemonTypeId)[0].attackScalar;
+  let defenceScalar;
+  if (!pokemonTypeId2) {
+    defenceScalar = attackScalar1;
+  } else {
+    const attackScalar2 = pokemonType.typeEffective.filter(t => t.id === pokemonTypeId2)[0].attackScalar;
+    defenceScalar = attackScalar2 * attackScalar1;
+  }
+  return Math.round(defenceScalar * 1000) / 10;
+};
+
 export const getDefenceTypeEffective = ({ pokemonTypeId, pokemonTypeId2, pokemonTypes }) => {
   if (!pokemonTypeId) return null;
   if (!pokemonTypes) {
     console.error(`Error: pokemonTypes: array, but ${pokemonTypes} found.`);
     return null;
   }
-  let defenceTypeEffective = {};
+  let defenceTypeEffective = {
+    vulnerableToTypes: [],
+    resistantToTypes: [],
+  };
   _.forEach(pokemonTypes, (pokemonType) => {
-    const attackScalar1 = pokemonType.typeEffective.filter(t => t.id === pokemonTypeId)[0].attackScalar;
     const { id, name } = pokemonType;
-    defenceTypeEffective = { ...defenceTypeEffective, [id]: { id, name } };
-    if (!pokemonTypeId2) {
-      defenceTypeEffective = {
-        ...defenceTypeEffective,
-        [id]: { ...defenceTypeEffective[id], defenceScalar: attackScalar1 },
-      };
-    } else {
-      const attackScalar2 = pokemonType.typeEffective.filter(t => t.id === pokemonTypeId2)[0].attackScalar;
-      const defenceScalar = Math.round(attackScalar2 * attackScalar1 * 1000) / 1000;
-      defenceTypeEffective = {
-        ...defenceTypeEffective,
-        [id]: { ...defenceTypeEffective[id], defenceScalar },
-      };
-    }
+    const newPokemonType = { id, name, imageKey: name.toLowerCase() };
+    const defenceScalar = getDefenceScalar({ pokemonTypeId, pokemonTypeId2, pokemonType });
+    let effectiveType;
+    if (defenceScalar > 100) effectiveType = 'vulnerableToTypes';
+    if (defenceScalar < 100) effectiveType = 'resistantToTypes';
+    if (!effectiveType) return;
+    defenceTypeEffective = {
+      ...defenceTypeEffective,
+      [effectiveType]: [...defenceTypeEffective[effectiveType], { ...newPokemonType, defenceScalar }],
+    };
   });
-  return _.pickBy(defenceTypeEffective, d => d.defenceScalar !== 1);
+  defenceTypeEffective = {
+    ...defenceTypeEffective,
+    vulnerableToTypes: _.orderBy(defenceTypeEffective.vulnerableToTypes, 'defenceScalar', 'desc'),
+    resistantToTypes: _.orderBy(defenceTypeEffective.resistantToTypes, 'defenceScalar', 'asc'),
+  };
+  return defenceTypeEffective;
 };
 
 export const getPokemonTypeIds = (pokemon) => {

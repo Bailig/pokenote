@@ -11,9 +11,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import * as searchPokemonModule from '../modules/searchPokemon';
-import { SearchBarHeader, BackButton } from './components';
+import { SearchBarHeader, DarkBackButton } from './components';
 import { COLOR, TEXT_STYLE, elevation } from './commonStyles';
-import images from '../util/images';
+import images from '../util/pokemonImages';
 
 const styles = StyleSheet.create({
   containerStyle: {
@@ -84,7 +84,7 @@ const FindPokemonScreen = ({
         numColumns={3}
         contentContainerStyle={styles.listContainerStyle}
       />
-      <BackButton onPress={() => navigation.goBack()} />
+      <DarkBackButton onPress={() => navigation.goBack()} />
     </View>
   );
 };

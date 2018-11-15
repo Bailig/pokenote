@@ -29,6 +29,8 @@ export const COLOR = {
   lowContrastDark: '#527394',
   highContrastLight: '#EDF1F2',
   lowContrastLight: '#BAC0C4',
+  red: '#EB5757',
+  green: '#27AE60',
 };
 
 // shadows

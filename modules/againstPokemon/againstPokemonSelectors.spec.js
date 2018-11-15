@@ -6,17 +6,19 @@ import pokemonTypes from '../../data/output/pokemonType.json';
 import * as uut from './againstPokemonSelectors';
 
 describe('pokemon selectors', () => {
-  const expectedDefenceTypeEffective = {
-    POKEMON_TYPE_FIRE: { id: 'POKEMON_TYPE_FIRE', name: 'Fire', defenceScalar: 1.4 },
-    POKEMON_TYPE_FLYING: { id: 'POKEMON_TYPE_FLYING', name: 'Flying', defenceScalar: 1.4 },
-    POKEMON_TYPE_ICE: { id: 'POKEMON_TYPE_ICE', name: 'Ice', defenceScalar: 1.4 },
-    POKEMON_TYPE_PSYCHIC: { id: 'POKEMON_TYPE_PSYCHIC', name: 'Psychic', defenceScalar: 1.4 },
-    POKEMON_TYPE_GRASS: { id: 'POKEMON_TYPE_GRASS', name: 'Grass', defenceScalar: 0.51 },
-    POKEMON_TYPE_ELECTRIC: { id: 'POKEMON_TYPE_ELECTRIC', name: 'Electric', defenceScalar: 0.714 },
-    POKEMON_TYPE_FAIRY: { id: 'POKEMON_TYPE_FAIRY', name: 'Fairy', defenceScalar: 0.714 },
-    POKEMON_TYPE_FIGHTING: { id: 'POKEMON_TYPE_FIGHTING', name: 'Fighting', defenceScalar: 0.714 },
-    POKEMON_TYPE_WATER: { id: 'POKEMON_TYPE_WATER', name: 'Water', defenceScalar: 0.714 },
-  };
+  const expectedVulnerableToTypes = [
+    { id: 'POKEMON_TYPE_FIRE', name: 'Fire', defenceScalar: 140, imageKey: 'fire' },
+    { id: 'POKEMON_TYPE_FLYING', name: 'Flying', defenceScalar: 140, imageKey: 'flying' },
+    { id: 'POKEMON_TYPE_ICE', name: 'Ice', defenceScalar: 140, imageKey: 'ice' },
+    { id: 'POKEMON_TYPE_PSYCHIC', name: 'Psychic', defenceScalar: 140, imageKey: 'psychic' },
+  ];
+  const expectedResistantToTypes = [
+    { id: 'POKEMON_TYPE_GRASS', name: 'Grass', defenceScalar: 51, imageKey: 'grass' },
+    { id: 'POKEMON_TYPE_ELECTRIC', name: 'Electric', defenceScalar: 71.4, imageKey: 'electric' },
+    { id: 'POKEMON_TYPE_FAIRY', name: 'Fairy', defenceScalar: 71.4, imageKey: 'fairy' },
+    { id: 'POKEMON_TYPE_FIGHTING', name: 'Fighting', defenceScalar: 71.4, imageKey: 'fighting' },
+    { id: 'POKEMON_TYPE_WATER', name: 'Water', defenceScalar: 71.4, imageKey: 'water' },
+  ];
 
   describe('selectAgainstPokemons()', () => {
     it('should select array of 6 nulls from pokemon state', () => {
@@ -47,7 +49,10 @@ describe('pokemon selectors', () => {
       };
       const result = [{
         ...pokemons.BULBASAUR,
-        defenceTypeEffective: expectedDefenceTypeEffective,
+        defenceTypeEffective: {
+          vulnerableToTypes: expectedVulnerableToTypes,
+          resistantToTypes: expectedResistantToTypes,
+        },
       }, null, null, null, null, null];
       Selector(uut.selectAgainstPokemons).expect(state).toReturn(result);
     });
@@ -65,7 +70,10 @@ describe('pokemon selectors', () => {
         pokemonTypeId2: 'POKEMON_TYPE_POISON',
         pokemonTypes,
       };
-      const result = expectedDefenceTypeEffective;
+      const result = {
+        vulnerableToTypes: expectedVulnerableToTypes,
+        resistantToTypes: expectedResistantToTypes,
+      };
       expect(uut.getDefenceTypeEffective(params)).toMatchObject(result);
     });
   });

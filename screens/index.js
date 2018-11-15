@@ -8,7 +8,9 @@ import PropTypes from 'prop-types';
 
 import * as appModule from '../modules/app';
 import * as pokemonModule from '../modules/pokemon';
+import * as againstPokemonModule from '../modules/againstPokemon';
 import AgainstScreen from './AgainstScreen';
+import AgainstMenuScreen from './AgainstMenuScreen';
 import FindPokemonScreen from './FindPokemonScreen';
 import CatchScreen from './CatchScreen';
 import { elevation, COLOR, TEXT_STYLE } from './commonStyles';
@@ -17,9 +19,10 @@ const MeScreen = () => <View style={{ flex: 1 }}><Text>MeScreen</Text></View>;
 
 class Screens extends React.Component {
   componentWillMount() {
-    const { loadFont, fetchPokemon } = this.props;
+    const { loadFont, fetchPokemon, fetchAgainstPokemon } = this.props;
     loadFont();
     fetchPokemon();
+    fetchAgainstPokemon();
   }
 
   render() {
@@ -73,11 +76,21 @@ class Screens extends React.Component {
     const AppNavigator = createStackNavigator({
       home: HomeTab,
       findPokemon: FindPokemonScreen,
+      againstMenu: AgainstMenuScreen,
     }, {
       navigationOptions: {
         header: null,
       },
       mode: 'modal',
+      cardStyle: {
+        backgroundColor: 'transparent',
+        opacity: 1,
+      },
+      transitionConfig: () => ({
+        containerStyle: {
+          backgroundColor: 'transparent',
+        },
+      }),
     });
 
     return <AppNavigator />;
@@ -89,6 +102,7 @@ Screens.propTypes = {
   fontLoaded: PropTypes.bool.isRequired,
   loadFont: PropTypes.func.isRequired,
   fetchPokemon: PropTypes.func.isRequired,
+  fetchAgainstPokemon: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -96,4 +110,10 @@ const mapStateToProps = (state) => {
   return { fontLoaded };
 };
 
-export default connect(mapStateToProps, { ...appModule, ...pokemonModule })(Screens);
+const mapDispatchToProps = {
+  loadFont: appModule.loadFont,
+  fetchPokemon: pokemonModule.fetchPokemon,
+  fetchAgainstPokemon: againstPokemonModule.fetchAgainstPokemon,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Screens);

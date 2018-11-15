@@ -1,4 +1,8 @@
-import { UPDATE_SEARCH_TEXT, UPDATE_SELECTED_POKEMON } from './searchPokemonActions';
+import {
+  UPDATE_SEARCH_TEXT,
+  UPDATE_SELECTED_POKEMON,
+  CLEAR_SELECTED_POKEMON,
+} from './searchPokemonActions';
 
 const initialState = {
   searchText: '',
@@ -12,6 +16,8 @@ export default (state = initialState, action = {}) => {
       return { ...state, searchText: payload };
     case UPDATE_SELECTED_POKEMON:
       return { ...state, selectedPokemonId: payload };
+    case CLEAR_SELECTED_POKEMON:
+      return { ...state, selectedPokemonId: null };
     default: return state;
   }
 };

@@ -4,8 +4,11 @@ import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Header, AddPokemonButton } from './components';
-import * as againstPokemonModule from '../modules/againstPokemon';
+import { Header, AddPokemonButton, PlusButton } from '../components';
+import { AgainstPokemonItem } from './components';
+import * as againstPokemonModule from '../../modules/againstPokemon';
+import * as searchPokemonModule from '../../modules/searchPokemon';
+import { COLOR } from '../commonStyles';
 
 class AgainstScreen extends React.Component {
   componentWillReceiveProps(newProps) {
@@ -13,7 +16,7 @@ class AgainstScreen extends React.Component {
   }
 
   handleUpdatingAgainstPokemon(newProps) {
-    const { selectedPokemonId, currentAgainstPokemonIndex } = this.props;
+    const { selectedPokemonId, currentAgainstPokemonIndex, clearSelectedPokemonId } = this.props;
     if (newProps.selectedPokemonId === selectedPokemonId
       && newProps.currentAgainstPokemonIndex === currentAgainstPokemonIndex) return;
 
@@ -24,6 +27,7 @@ class AgainstScreen extends React.Component {
       selectedPokemonId: newProps.selectedPokemonId,
       currentAgainstPokemonIndex: newProps.currentAgainstPokemonIndex,
     });
+    clearSelectedPokemonId();
   }
 
   render() {
@@ -37,9 +41,8 @@ class AgainstScreen extends React.Component {
         updateAgainstPokemonIndex(index);
         navigation.navigate('findPokemon');
       };
-
       if (!item) return <AddPokemonButton onPress={handleOnPress} />;
-      return <View />;
+      return <AgainstPokemonItem pokemon={item} onPress={handleOnPress} />;
     };
     handleRenderRow.propTypes = {
       item: PropTypes.shape().isRequired,
@@ -47,14 +50,19 @@ class AgainstScreen extends React.Component {
     };
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: COLOR.highContrastLight }}>
         <Header text="Pokemons to fight against" />
         <FlatList
-          style={{ flex: 1, marginHorizontal: 20, marginTop: 100 }}
           data={againstPokemons}
           renderItem={handleRenderRow}
           keyExtractor={(item, index) => `${index}`}
+          contentContainerStyle={{
+            marginHorizontal: 20,
+            paddingBottom: 60,
+            paddingTop: 100,
+          }}
         />
+        <PlusButton onPress={() => navigation.navigate('againstMenu')} />
       </View>
     );
   }
@@ -75,6 +83,7 @@ AgainstScreen.propTypes = {
   currentAgainstPokemonIndex: PropTypes.number,
   updateAgainstPokemonIndex: PropTypes.func.isRequired,
   updateAgainstPokemon: PropTypes.func.isRequired,
+  clearSelectedPokemonId: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -86,6 +95,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   updateAgainstPokemonIndex: againstPokemonModule.updateAgainstPokemonIndex,
   updateAgainstPokemon: againstPokemonModule.updateAgainstPokemon,
+  clearSelectedPokemonId: searchPokemonModule.clearSelectedPokemonId,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AgainstScreen);

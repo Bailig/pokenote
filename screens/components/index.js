@@ -4,4 +4,7 @@ export * from './HeaderContainer';
 export * from './Headline';
 export * from './SearchBar';
 export * from './SearchBarHeader';
-export * from './BackButton';
+export * from './DarkBackButton';
+export * from './LightBackButton';
+export * from './PokemonTypeImage';
+export * from './PlusButton';
