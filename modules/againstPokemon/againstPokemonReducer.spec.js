@@ -1,12 +1,12 @@
 import { Reducer } from 'redux-testkit';
 
-import { UPDATE } from './againtPokemonActions';
+import { UPDATE_SUCCESS } from './againtPokemonActions';
 import uut from './againstPokemonReducer';
 
 describe('against pokemon reducer', () => {
-  it('should handle UPDATE action on initial state', () => {
+  it('should handle UPDATE_SUCCESS action on initial state', () => {
     const action = {
-      type: UPDATE,
+      type: UPDATE_SUCCESS,
       payload: { selectedPokemonId: 'IVYSAUR', currentAgainstPokemonIndex: 2 },
     };
     const result = {

@@ -1,17 +1,34 @@
 import React from 'react';
-import { ImageBackground } from 'react-native';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { LightBackButton } from './components';
+import * as againstPokemonModule from '../modules/againstPokemon';
+import { MenuScreenContainer, MenuButton } from './components';
 
-const AgainstMenuScreen = ({ navigation }) => (
-  <ImageBackground source={require('../assets/background.png')} style={{ flex: 1 }}>
-    <LightBackButton onPress={() => navigation.goBack()} />
-  </ImageBackground>
-);
+
+const AgainstMenuScreen = ({ navigation, removeAgainstPokemon }) => {
+  const handleRemoveSelections = () => {
+    removeAgainstPokemon();
+    navigation.goBack();
+  };
+  return (
+    <MenuScreenContainer onBack={() => navigation.goBack()}>
+      <MenuButton
+        onPress={handleRemoveSelections}
+        text="Remove Selections"
+        iconName="trash"
+      />
+    </MenuScreenContainer>
+  );
+};
 
 AgainstMenuScreen.propTypes = {
   navigation: PropTypes.shape().isRequired,
+  removeAgainstPokemon: PropTypes.func.isRequired,
 };
 
-export default AgainstMenuScreen;
+const mapDispatchToProps = {
+  removeAgainstPokemon: againstPokemonModule.removeAgainstPokemon,
+};
+
+export default connect(null, mapDispatchToProps)(AgainstMenuScreen);

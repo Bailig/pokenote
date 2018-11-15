@@ -71,7 +71,7 @@ export const AgainstPokemonItem = ({ pokemon, ...props }) => (
           <Text style={styles.textVulnerableToStyle}>Vulnerable to</Text>
           <View style={styles.pokemonTypesContainerStyle}>
             {
-              pokemon.defenceTypeEffective.resistantToTypes
+              pokemon.defenceTypeEffective.vulnerableToTypes
                 .map(t => <PokemonTypeItem {...t} key={t.id} textStyle={{ color: COLOR.red }} />)
             }
           </View>
@@ -81,7 +81,7 @@ export const AgainstPokemonItem = ({ pokemon, ...props }) => (
           <Text style={styles.textResistantToStyle}>Resistant to</Text>
           <View style={styles.pokemonTypesContainerStyle}>
             {
-              pokemon.defenceTypeEffective.vulnerableToTypes
+              pokemon.defenceTypeEffective.resistantToTypes
                 .map(t => <PokemonTypeItem {...t} key={t.id} textStyle={{ color: COLOR.green }} />)
             }
           </View>

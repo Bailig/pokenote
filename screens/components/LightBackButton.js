@@ -21,6 +21,6 @@ const styles = StyleSheet.create({
 
 export const LightBackButton = props => (
   <TouchableHighlight style={styles.containerStyle} {...props}>
-    <Icon name="close" type="font-awesome" color={COLOR.highContrastDark} />
+    <Icon name="close" type="font-awesome" color={COLOR.lowContrastDark} />
   </TouchableHighlight>
 );

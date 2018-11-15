@@ -51,7 +51,7 @@ class AgainstScreen extends React.Component {
 
     return (
       <View style={{ flex: 1, backgroundColor: COLOR.highContrastLight }}>
-        <Header text="Pokemons to fight against" />
+        <Header text="Pokemon to fight against" />
         <FlatList
           data={againstPokemons}
           renderItem={handleRenderRow}

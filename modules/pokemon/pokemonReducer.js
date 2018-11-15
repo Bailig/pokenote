@@ -1,10 +1,11 @@
-import { FETCH_SUCCESS, UPDATE } from './pokemonActions';
+import { FETCH_SUCCESS, UPDATE, FETCH_FAIL } from './pokemonActions';
 
 // reducer
 const initialState = {
   pokemons: null,
   pokemonMoves: null,
   pokemonTypes: null,
+  pokemonFetched: null,
 };
 
 export default (state = initialState, action = {}) => {
@@ -14,7 +15,10 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         ...payload,
+        pokemonFetched: true,
       };
+    case FETCH_FAIL:
+      return { ...state, pokemonFetched: false };
     case UPDATE:
       return {
         ...state,

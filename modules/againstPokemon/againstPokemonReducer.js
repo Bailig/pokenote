@@ -1,4 +1,9 @@
-import { UPDATE_INDEX, FETCH_SUCCESS, UPDATE_SUCCESS } from './againtPokemonActions';
+import {
+  UPDATE_INDEX,
+  FETCH_SUCCESS,
+  UPDATE_SUCCESS,
+  REMOVE_SUCCESS,
+} from './againtPokemonActions';
 
 const initialState = {
   againstPokemonIds: new Array(6).fill(null),
@@ -21,6 +26,8 @@ export default (state = initialState, action = {}) => {
       };
     case UPDATE_INDEX:
       return { ...state, currentAgainstPokemonIndex: payload };
+    case REMOVE_SUCCESS:
+      return initialState;
     default: return state;
   }
 };

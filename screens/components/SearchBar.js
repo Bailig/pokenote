@@ -37,6 +37,8 @@ export const SearchBar = props => (
       placeholder="Search by name or type"
       placeholderTextColor={COLOR.highContrastDark}
       {...props}
+      autoCapitalize="none"
+      autoCorrect={false}
     />
   </View>
 );

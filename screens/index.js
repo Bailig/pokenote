@@ -13,6 +13,7 @@ import AgainstScreen from './AgainstScreen';
 import AgainstMenuScreen from './AgainstMenuScreen';
 import FindPokemonScreen from './FindPokemonScreen';
 import CatchScreen from './CatchScreen';
+import CatchMenuScreen from './CatchMenuScreen';
 import { elevation, COLOR, TEXT_STYLE } from './commonStyles';
 
 const MeScreen = () => <View style={{ flex: 1 }}><Text>MeScreen</Text></View>;
@@ -26,8 +27,9 @@ class Screens extends React.Component {
   }
 
   render() {
-    const { fontLoaded } = this.props;
-    if (!fontLoaded) return <AppLoading />;
+    const { fontLoaded, pokemonFetched } = this.props;
+    if (!fontLoaded || !pokemonFetched) return <AppLoading />;
+
     const HomeTab = createBottomTabNavigator({
       against: {
         screen: AgainstScreen,
@@ -77,6 +79,7 @@ class Screens extends React.Component {
       home: HomeTab,
       findPokemon: FindPokemonScreen,
       againstMenu: AgainstMenuScreen,
+      catchMenu: CatchMenuScreen,
     }, {
       navigationOptions: {
         header: null,
@@ -97,17 +100,21 @@ class Screens extends React.Component {
   }
 }
 
+Screens.defaultProps = {
+  pokemonFetched: null,
+};
 
 Screens.propTypes = {
   fontLoaded: PropTypes.bool.isRequired,
+  pokemonFetched: PropTypes.bool,
   loadFont: PropTypes.func.isRequired,
   fetchPokemon: PropTypes.func.isRequired,
   fetchAgainstPokemon: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const { app: { fontLoaded } } = state;
-  return { fontLoaded };
+  const { app: { fontLoaded }, pokemon: { pokemonFetched } } = state;
+  return { fontLoaded, pokemonFetched };
 };
 
 const mapDispatchToProps = {
