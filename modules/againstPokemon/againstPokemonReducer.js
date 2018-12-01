@@ -1,3 +1,4 @@
+import R from 'ramda';
 import {
   UPDATE_INDEX,
   FETCH_SUCCESS,
@@ -21,7 +22,7 @@ export default (state = initialState, action = {}) => {
     case UPDATE_SUCCESS:
       return {
         ...state,
-        againstPokemonIds: state.againstPokemonIds.map((a, i) => (i === payload.currentAgainstPokemonIndex ? payload.selectedPokemonId : a)),
+        againstPokemonIds: R.update(payload.currentAgainstPokemonIndex, payload.selectedPokemonId, state.againstPokemonIds),
         currentAgainstPokemonIndex: null,
       };
     case UPDATE_INDEX:
