@@ -7,7 +7,7 @@ import {
 } from './againtPokemonActions';
 
 const initialState = {
-  againstPokemonIds: new Array(6).fill(null),
+  againstPokemonIds: new Array(6).fill(undefined),
   currentAgainstPokemonIndex: null,
 };
 

@@ -23,7 +23,7 @@ describe('pokemon selectors', () => {
   const bulbasaur = pokemons.BULBASAUR;
 
   describe('selectAgainstPokemons()', () => {
-    it('should select array of 6 nulls from pokemon state', () => {
+    it('should select array of 6 undefined from pokemon state', () => {
       const state = {
         pokemon: {
           pokemons,
@@ -31,10 +31,10 @@ describe('pokemon selectors', () => {
           pokemonTypes,
         },
         againstPokemon: {
-          againstPokemonIds: new Array(6).fill(null),
+          againstPokemonIds: new Array(6).fill(undefined),
         },
       };
-      const result = new Array(6).fill(null);
+      const result = new Array(6).fill(undefined);
       Selector(uut.selectAgainstPokemons).expect(state).toReturn(result);
     });
 
@@ -46,7 +46,7 @@ describe('pokemon selectors', () => {
           pokemonTypes,
         },
         againstPokemon: {
-          againstPokemonIds: ['BULBASAUR', null, null, null, null, null],
+          againstPokemonIds: ['BULBASAUR', undefined, undefined, undefined, undefined, undefined],
         },
       };
       const result = [{
@@ -55,42 +55,8 @@ describe('pokemon selectors', () => {
           vulnerableToTypes: expectedVulnerableToTypes,
           resistantToTypes: expectedResistantToTypes,
         },
-      }, null, null, null, null, null];
+      }, undefined, undefined, undefined, undefined, undefined];
       Selector(uut.selectAgainstPokemons).expect(state).toReturn(result);
     });
-  });
-
-  describe('helper functions', () => {
-    it('assignDefenceTypeEffective() should return pokemon with defenceTypeEffective', () => {
-      const result = {
-        ...bulbasaur,
-        defenceTypeEffective: {
-          vulnerableToTypes: expectedVulnerableToTypes,
-          resistantToTypes: expectedResistantToTypes,
-        },
-      };
-      expect(uut.assignDefenceTypeEffective(R.values(pokemonTypes), bulbasaur)).toMatchObject(result);
-    });
-
-    it('getDefenceScalar() should return pokemon DefenceScalar', () => {
-      expect(uut.getDefenceScalar('POKEMON_TYPE_GRASS', 'POKEMON_TYPE_POISON', pokemonTypes.POKEMON_TYPE_FIRE)).toEqual(140);
-    });
-    // it('getPokemonTypeIds() should return pokemon typeIds', () => {
-    //   const result = { pokemonTypeId: 'POKEMON_TYPE_GRASS', pokemonTypeId2: 'POKEMON_TYPE_POISON' };
-    //   expect(uut.getPokemonTypeIds(bulbasaur)).toMatchObject(result);
-    // });
-
-    // it('getDefenceTypeEffective() should return defenceTypeEffective for one pokemon', () => {
-    //   const params = {
-    //     pokemonTypeId: 'POKEMON_TYPE_GRASS',
-    //     pokemonTypeId2: 'POKEMON_TYPE_POISON',
-    //     pokemonTypes,
-    //   };
-    //   const result = {
-    //     vulnerableToTypes: expectedVulnerableToTypes,
-    //     resistantToTypes: expectedResistantToTypes,
-    //   };
-    //   expect(uut.getDefenceTypeEffective(params)).toMatchObject(result);
-    // });
   });
 });

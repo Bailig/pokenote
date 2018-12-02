@@ -10,7 +10,7 @@ describe('against pokemon reducer', () => {
       payload: { selectedPokemonId: 'IVYSAUR', currentAgainstPokemonIndex: 2 },
     };
     const result = {
-      againstPokemonIds: [null, null, 'IVYSAUR', null, null, null],
+      againstPokemonIds: [undefined, undefined, 'IVYSAUR', undefined, undefined, undefined],
       currentAgainstPokemonIndex: null,
     };
     Reducer(uut).expect(action).toReturnState(result);

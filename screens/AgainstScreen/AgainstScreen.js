@@ -69,7 +69,7 @@ class AgainstScreen extends React.Component {
 }
 
 AgainstScreen.defaultProps = {
-  againstPokemons: new Array(6).fill(null),
+  againstPokemons: new Array(6).fill(undefined),
   selectedPokemonId: null,
   currentAgainstPokemonIndex: null,
 };
