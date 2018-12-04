@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import R from 'ramda';
 import { Font } from 'expo';
 import * as firebase from 'firebase';
 
@@ -36,7 +36,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         fontLoaded: true,
-        errors: _.omit(state.errors, 'loadFontFail'),
+        errors: R.dissoc('loadFontFail', state.errors),
       };
     case LOAD_FONT_FAIL:
       return {

@@ -1,39 +1,43 @@
-
+import * as testData from '../../data/testData';
 import * as uut from './pokemonServices';
-import pokemons from '../../data/output/pokemon.json';
-import pokemonTypes from '../../data/output/pokemonType.json';
+import { getDefenceScalar } from './pokemonTypeServices';
+
+jest.mock('./pokemonTypeServices');
 
 describe('pokemon services', () => {
-  const expectedVulnerableToTypes = [
-    { id: 'POKEMON_TYPE_FIRE', name: 'Fire', defenceScalar: 140, imageKey: 'fire' },
-    { id: 'POKEMON_TYPE_FLYING', name: 'Flying', defenceScalar: 140, imageKey: 'flying' },
-    { id: 'POKEMON_TYPE_ICE', name: 'Ice', defenceScalar: 140, imageKey: 'ice' },
-    { id: 'POKEMON_TYPE_PSYCHIC', name: 'Psychic', defenceScalar: 140, imageKey: 'psychic' },
-  ];
-  const expectedResistantToTypes = [
-    { id: 'POKEMON_TYPE_GRASS', name: 'Grass', defenceScalar: 51, imageKey: 'grass' },
-    { id: 'POKEMON_TYPE_ELECTRIC', name: 'Electric', defenceScalar: 71.4, imageKey: 'electric' },
-    { id: 'POKEMON_TYPE_FAIRY', name: 'Fairy', defenceScalar: 71.4, imageKey: 'fairy' },
-    { id: 'POKEMON_TYPE_FIGHTING', name: 'Fighting', defenceScalar: 71.4, imageKey: 'fighting' },
-    { id: 'POKEMON_TYPE_WATER', name: 'Water', defenceScalar: 71.4, imageKey: 'water' },
-  ];
-  const bulbasaur = pokemons.BULBASAUR;
+  const bulbasaur = testData.getPokemon();
+  const pokemonTypes = testData.getPokemonTypes();
+  const defenceTypeEffective = testData.getDefenceTypeEffective();
 
-  it('getDefenceTypeEffective() should return { vulnerableToTypes, resistantToTypes }', () => {
-    const result = {
-      vulnerableToTypes: expectedVulnerableToTypes,
-      resistantToTypes: expectedResistantToTypes,
-    };
+  beforeEach(() => {
+    getDefenceScalar.mockImplementation(testData.getDefenceScalar);
+  });
+
+  it('isVulnerableToType() should return true', () => {
+    expect(uut.isVulnerableToType(bulbasaur.pokemonTypes, pokemonTypes.POKEMON_TYPE_FIRE)).toEqual(true);
+  });
+
+  it('isVulnerableToType() should return false', () => {
+    expect(uut.isVulnerableToType(bulbasaur.pokemonTypes, pokemonTypes.POKEMON_TYPE_GRASS)).toEqual(false);
+  });
+
+  it('isResistantToType() should return true', () => {
+    expect(uut.isResistantToType(bulbasaur.pokemonTypes, pokemonTypes.POKEMON_TYPE_GRASS)).toEqual(true);
+  });
+
+  it('isResistantToType() should return false', () => {
+    expect(uut.isResistantToType(bulbasaur.pokemonTypes, pokemonTypes.POKEMON_TYPE_FIRE)).toEqual(false);
+  });
+
+  it('getDefenceTypeEffective() should return defenceTypeEffective', () => {
+    const result = defenceTypeEffective;
     expect(uut.getDefenceTypeEffective(pokemonTypes, bulbasaur)).toEqual(result);
   });
 
   it('assignDefenceTypeEffective() should return pokemon with defenceTypeEffective', () => {
     const result = {
       ...bulbasaur,
-      defenceTypeEffective: {
-        vulnerableToTypes: expectedVulnerableToTypes,
-        resistantToTypes: expectedResistantToTypes,
-      },
+      defenceTypeEffective,
     };
     expect(uut.assignDefenceTypeEffective(pokemonTypes, bulbasaur)).toEqual(result);
   });

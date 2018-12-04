@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "jest": "node_modules/.bin/jest"
+    "jest": "node_modules/.bin/jest --watch"
   },
   "dependencies": {
     "csv-parse": "^3.1.3",

@@ -1,26 +1,42 @@
 import R from 'ramda';
 import { getDefenceScalar } from './pokemonTypeServices';
 
-const isVulnerableToType = R.gt(R.__, 100);
-const isResistantToType = R.lt(R.__, 100);
+export const isVulnerableToType = R.curry((thisPokemonTypes, pokemonType) => R.pipe(
+  getDefenceScalar(thisPokemonTypes),
+  R.gt(R.__, 100),
+)(pokemonType));
 
-const assignDefenceScalar = (defenceScaler, pokemonType) => R.compose(R.assoc('defenceScalar', defenceScaler), R.dissoc('typeEffective'))(pokemonType);
+export const isResistantToType = R.curry((thisPokemonTypes, pokemonType) => R.pipe(
+  getDefenceScalar(thisPokemonTypes),
+  R.lt(R.__, 100),
+)(pokemonType));
 
+const assignDefenceScalar = R.curry((thisPokemonTypes, pokemonType) => {
+  const defenceScalar = getDefenceScalar(thisPokemonTypes, pokemonType);
+  return R.pipe(
+    R.dissoc('typeEffective'),
+    R.assoc('defenceScalar', defenceScalar),
+  )(pokemonType);
+});
 
-export const getDefenceTypeEffective = (pokemonTypes, thisPokemon) => {
-  let vulnerableToTypes = [];
-  let resistantToTypes = [];
-  R.forEach((pokemonType) => {
-    const defenceScaler = getDefenceScalar(R.prop('pokemonTypes', thisPokemon), pokemonType);
-    const newPokemonType = assignDefenceScalar(defenceScaler, pokemonType);
-    if (isVulnerableToType(defenceScaler)) vulnerableToTypes = R.append(newPokemonType, vulnerableToTypes);
-    if (isResistantToType(defenceScaler)) resistantToTypes = R.append(newPokemonType, resistantToTypes);
-  }, R.values(pokemonTypes));
-  return {
-    vulnerableToTypes: R.sort(R.descend(R.prop('defenceScalar')), vulnerableToTypes),
-    resistantToTypes: R.sort(R.ascend(R.prop('defenceScalar')), resistantToTypes),
-  };
-};
+export const getDefenceTypeEffective = R.curry((pokemonTypes, thisPokemon) => {
+  const thisPokemonTypes = R.prop('pokemonTypes', thisPokemon);
+  const pokemonTypesArray = R.values(pokemonTypes);
+
+  const vulnerableToTypes = R.pipe(
+    R.filter(isVulnerableToType(thisPokemonTypes)),
+    R.map(assignDefenceScalar(thisPokemonTypes)),
+    R.sort(R.descend(R.prop('defenceScalar'))),
+  )(pokemonTypesArray);
+
+  const resistantToTypes = R.pipe(
+    R.filter(isResistantToType(thisPokemonTypes)),
+    R.map(assignDefenceScalar(thisPokemonTypes)),
+    R.sort(R.ascend(R.prop('defenceScalar'))),
+  )(pokemonTypesArray);
+
+  return { vulnerableToTypes, resistantToTypes };
+});
 
 export const assignDefenceTypeEffective = R.curry((pokemonTypes, thisPokemon) => {
   if (R.isNil(thisPokemon)) return undefined;

@@ -1,3 +1,4 @@
+import R from 'ramda';
 import { FETCH_SUCCESS, UPDATE, FETCH_FAIL } from './pokemonActions';
 
 // reducer
@@ -12,21 +13,11 @@ export default (state = initialState, action = {}) => {
   const { type, payload } = action;
   switch (type) {
     case FETCH_SUCCESS:
-      return {
-        ...state,
-        ...payload,
-        pokemonFetched: true,
-      };
+      return R.mergeAll([state, payload, { pokemonFetched: true }]);
     case FETCH_FAIL:
-      return { ...state, pokemonFetched: false };
+      return R.assoc('pokemonFetched', false, state);
     case UPDATE:
-      return {
-        ...state,
-        pokemons: {
-          ...state.pokemons,
-          [payload.id]: payload,
-        },
-      };
+      return R.assocPath(['pokemons', payload.id], payload, state);
     default: return state;
   }
 };

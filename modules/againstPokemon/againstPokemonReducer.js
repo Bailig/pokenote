@@ -15,18 +15,14 @@ export default (state = initialState, action = {}) => {
   const { type, payload } = action;
   switch (type) {
     case FETCH_SUCCESS:
-      return {
-        ...state,
-        againstPokemonIds: payload,
-      };
+      return R.assoc('againstPokemonIds', payload, state);
     case UPDATE_SUCCESS:
-      return {
-        ...state,
-        againstPokemonIds: R.update(payload.currentAgainstPokemonIndex, payload.selectedPokemonId, state.againstPokemonIds),
-        currentAgainstPokemonIndex: null,
-      };
+      return R.evolve({
+        againstPokemonIds: R.update(payload.currentAgainstPokemonIndex, payload.selectedPokemonId),
+        currentAgainstPokemonIndex: R.always(null),
+      })(state);
     case UPDATE_INDEX:
-      return { ...state, currentAgainstPokemonIndex: payload };
+      return R.assoc('currentAgainstPokemonIndex', payload, state);
     case REMOVE_SUCCESS:
       return initialState;
     default: return state;

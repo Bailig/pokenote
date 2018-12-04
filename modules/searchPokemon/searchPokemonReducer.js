@@ -1,3 +1,4 @@
+import R from 'ramda';
 import {
   UPDATE_SEARCH_TEXT,
   UPDATE_SELECTED_POKEMON,
@@ -13,11 +14,11 @@ export default (state = initialState, action = {}) => {
   const { type, payload } = action;
   switch (type) {
     case UPDATE_SEARCH_TEXT:
-      return { ...state, searchText: payload };
+      return R.assoc('searchText', payload, state);
     case UPDATE_SELECTED_POKEMON:
-      return { ...state, selectedPokemonId: payload };
+      return R.assoc('selectedPokemonId', payload, state);
     case CLEAR_SELECTED_POKEMON:
-      return { ...state, selectedPokemonId: null };
+      return R.assoc('selectedPokemonId', null, state);
     default: return state;
   }
 };

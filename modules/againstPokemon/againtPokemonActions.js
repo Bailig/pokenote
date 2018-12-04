@@ -1,3 +1,4 @@
+import R from 'ramda';
 import { AsyncStorage } from 'react-native';
 
 export const FETCH = 'againstPokemon/FETCH';
@@ -18,7 +19,7 @@ export const updateAgainstPokemonIndex = index => ({ type: UPDATE_INDEX, payload
 export const fetchAgainstPokemon = () => async (dispatch) => {
   dispatch({ type: FETCH });
   try {
-    const againstPokemonIds = (await AsyncStorage.multiGet(AGAINST_POKEMON_KEYS)).map(item => item[1]);
+    const againstPokemonIds = R.map(R.last, (await AsyncStorage.multiGet(AGAINST_POKEMON_KEYS)));
     dispatch({
       type: FETCH_SUCCESS,
       payload: againstPokemonIds,
