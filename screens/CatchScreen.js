@@ -1,12 +1,18 @@
+import R from 'ramda';
 import React from 'react';
 import { View, FlatList } from 'react-native';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { COLOR } from './commonStyles';
 import { SearchBarHeader, PlusButton } from './components';
+import * as catchPokemonModule from '../modules/catchPokemon';
 
-const CatchScreen = ({ navigation, catchPokemons }) => {
+const CatchScreen = (props) => {
+  const { navigation, catchPokemons } = props;
+
   const handleRenderRow = () => <View />;
+
   return (
     <View style={{ flex: 1, backgroundColor: COLOR.highContrastLight }}>
       <SearchBarHeader text="Pokemon to catch" />
@@ -31,9 +37,13 @@ CatchScreen.defaultProps = {
 
 CatchScreen.propTypes = {
   catchPokemons: PropTypes.arrayOf(PropTypes.object),
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-  }).isRequired,
+  navigation: PropTypes.shape().isRequired,
 };
 
-export default CatchScreen;
+const mapStateToProps = state => ({
+});
+
+const mapDispatchToProps = {
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CatchScreen);

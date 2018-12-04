@@ -3,10 +3,10 @@ import { FETCH_SUCCESS, UPDATE, FETCH_FAIL } from './pokemonActions';
 
 // reducer
 const initialState = {
-  pokemons: null,
-  pokemonMoves: null,
-  pokemonTypes: null,
-  pokemonFetched: null,
+  pokemons: undefined,
+  pokemonMoves: undefined,
+  pokemonTypes: undefined,
+  pokemonFetched: undefined,
 };
 
 export default (state = initialState, action = {}) => {

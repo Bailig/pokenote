@@ -11,7 +11,9 @@ import * as pokemonModule from '../modules/pokemon';
 import * as againstPokemonModule from '../modules/againstPokemon';
 import AgainstScreen from './AgainstScreen';
 import AgainstMenuScreen from './AgainstMenuScreen';
-import FindPokemonScreen from './FindPokemonScreen';
+import FindPokemonToAgainstScreen from './FindPokemonToAgainstScreen';
+import FindPokemonToCatchScreen from './FindPokemonToCatchScreen';
+import AddCatchPokemonScreen from './AddCatchPokemonScreen';
 import CatchScreen from './CatchScreen';
 import CatchMenuScreen from './CatchMenuScreen';
 import { elevation, COLOR, TEXT_STYLE } from './commonStyles';
@@ -77,9 +79,11 @@ class Screens extends React.Component {
 
     const AppNavigator = createStackNavigator({
       home: HomeTab,
-      findPokemon: FindPokemonScreen,
+      findPokemonToAgainst: FindPokemonToAgainstScreen,
+      findPokemonToCatch: FindPokemonToCatchScreen,
       againstMenu: AgainstMenuScreen,
       catchMenu: CatchMenuScreen,
+      addCatchPokemon: AddCatchPokemonScreen,
     }, {
       navigationOptions: {
         header: null,

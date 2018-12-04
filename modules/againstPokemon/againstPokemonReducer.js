@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   againstPokemonIds: new Array(6).fill(undefined),
-  currentAgainstPokemonIndex: null,
+  currentAgainstPokemonIndex: undefined,
 };
 
 export default (state = initialState, action = {}) => {
@@ -18,8 +18,8 @@ export default (state = initialState, action = {}) => {
       return R.assoc('againstPokemonIds', payload, state);
     case UPDATE_SUCCESS:
       return R.evolve({
-        againstPokemonIds: R.update(payload.currentAgainstPokemonIndex, payload.selectedPokemonId),
-        currentAgainstPokemonIndex: R.always(null),
+        againstPokemonIds: R.always(payload),
+        currentAgainstPokemonIndex: R.always(undefined),
       })(state);
     case UPDATE_INDEX:
       return R.assoc('currentAgainstPokemonIndex', payload, state);

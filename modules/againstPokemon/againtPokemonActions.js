@@ -12,14 +12,25 @@ export const REMOVE = 'againstPokemon/REMOVE';
 export const REMOVE_SUCCESS = 'againstPokemon/REMOVE_SUCCESS';
 export const REMOVE_FAIL = 'againstPokemon/REMOVE_FAIL';
 
-const AGAINST_POKEMON_KEYS = ['againstPokemon0', 'againstPokemon1', 'againstPokemon2', 'againstPokemon3', 'againstPokemon4', 'againstPokemon5'];
+const fetchAgainstPokemonIds = async () => {
+  const defaultAgainstPokemonIds = new Array(6).fill(undefined);
+  const againstPokemonIds = JSON.parse(await AsyncStorage.getItem('againstPokemonIds'));
+  return R.defaultTo(defaultAgainstPokemonIds, againstPokemonIds);
+};
+
+const updateAgainstPokemonIds = async (index, pokemonId) => {
+  const againstPokemonIds = await fetchAgainstPokemonIds();
+  const updatedAgainstPokemonIds = R.update(index, pokemonId, againstPokemonIds);
+  await AsyncStorage.setItem('againstPokemonIds', JSON.stringify(updatedAgainstPokemonIds));
+  return Promise.resolve(updatedAgainstPokemonIds);
+};
 
 export const updateAgainstPokemonIndex = index => ({ type: UPDATE_INDEX, payload: index });
 
 export const fetchAgainstPokemon = () => async (dispatch) => {
   dispatch({ type: FETCH });
   try {
-    const againstPokemonIds = R.map(R.last, (await AsyncStorage.multiGet(AGAINST_POKEMON_KEYS)));
+    const againstPokemonIds = await fetchAgainstPokemonIds();
     dispatch({
       type: FETCH_SUCCESS,
       payload: againstPokemonIds,
@@ -29,13 +40,14 @@ export const fetchAgainstPokemon = () => async (dispatch) => {
   }
 };
 
-export const updateAgainstPokemon = ({ selectedPokemonId, currentAgainstPokemonIndex }) => async (dispatch) => {
+export const updateAgainstPokemon = selectedPokemonId => async (dispatch, getState) => {
   dispatch({ type: UPDATE });
+  const { againstPokemon: { currentAgainstPokemonIndex } } = getState();
   try {
-    await AsyncStorage.setItem(`againstPokemon${currentAgainstPokemonIndex}`, selectedPokemonId);
+    const updatedAgainstPokemonIds = await updateAgainstPokemonIds(currentAgainstPokemonIndex, selectedPokemonId);
     dispatch({
       type: UPDATE_SUCCESS,
-      payload: { selectedPokemonId, currentAgainstPokemonIndex },
+      payload: updatedAgainstPokemonIds,
     });
   } catch (error) {
     dispatch({ type: UPDATE_FAIL, payload: error });
@@ -45,7 +57,7 @@ export const updateAgainstPokemon = ({ selectedPokemonId, currentAgainstPokemonI
 export const removeAgainstPokemon = () => async (dispatch) => {
   dispatch({ type: REMOVE });
   try {
-    await AsyncStorage.multiRemove(AGAINST_POKEMON_KEYS);
+    await AsyncStorage.removeItem('againstPokemonIds');
     dispatch({ type: REMOVE_SUCCESS });
   } catch (error) {
     dispatch({ type: REMOVE_FAIL, payload: error });

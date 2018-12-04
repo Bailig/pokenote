@@ -10,10 +10,10 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import * as searchPokemonModule from '../modules/searchPokemon';
-import { SearchBarHeader, DarkBackButton } from './components';
-import { COLOR, TEXT_STYLE, elevation } from './commonStyles';
-import images from '../util/pokemonImages';
+import * as searchPokemonModule from '../../modules/searchPokemon';
+import { SearchBarHeader, DarkBackButton } from '../components';
+import { COLOR, TEXT_STYLE, elevation } from '../commonStyles';
+import images from '../../util/pokemonImages';
 
 const styles = StyleSheet.create({
   containerStyle: {
@@ -46,27 +46,26 @@ const styles = StyleSheet.create({
   },
 });
 
-const FindPokemonScreen = ({
-  pokemons, searchText, updateSearchText, navigation, updateSelectedPokemon,
+const FindPokemon = ({
+  pokemons, searchText, updateSearchText, clearSearchText, onPokemonPress, onBack,
 }) => {
-  const renderPokemon = ({ item }) => {
-    const handlePokemonOnPress = () => {
-      updateSelectedPokemon(item.id);
-      navigation.goBack();
-    };
-    return (
-      <TouchableHighlight
-        style={styles.pokemonItemContainerStyle}
-        onPress={handlePokemonOnPress}
-        underlayColor={COLOR.lowContrastDark}
-      >
-        <View>
-          <Image style={styles.pokemonItemImageStyle} source={images[item.imageKey]} />
-          <Text style={styles.pokemonItemTextStyle} numberOfLines={1}>{item.name}</Text>
-        </View>
-      </TouchableHighlight>
-    );
+  const handlePokemonPress = (pokemonId) => {
+    onPokemonPress(pokemonId);
+    clearSearchText();
   };
+  const renderPokemon = ({ item }) => (
+    <TouchableHighlight
+      style={styles.pokemonItemContainerStyle}
+      onPress={() => handlePokemonPress(item.id)}
+      underlayColor={COLOR.lowContrastDark}
+    >
+      <View>
+        <Image style={styles.pokemonItemImageStyle} source={images[item.imageKey]} />
+        <Text style={styles.pokemonItemTextStyle} numberOfLines={1}>{item.name}</Text>
+      </View>
+    </TouchableHighlight>
+  );
+
   renderPokemon.propTypes = {
     item: PropTypes.shape({
       imageKey: PropTypes.string,
@@ -84,34 +83,33 @@ const FindPokemonScreen = ({
         numColumns={3}
         contentContainerStyle={styles.listContainerStyle}
       />
-      <DarkBackButton onPress={() => navigation.goBack()} />
+      <DarkBackButton onPress={onBack} />
     </View>
   );
 };
 
-FindPokemonScreen.defaultProps = {
+FindPokemon.defaultProps = {
   pokemons: [],
 };
 
-FindPokemonScreen.propTypes = {
+FindPokemon.propTypes = {
   searchText: PropTypes.string.isRequired,
   pokemons: PropTypes.arrayOf(PropTypes.object),
   updateSearchText: PropTypes.func.isRequired,
-  navigation: PropTypes.shape().isRequired,
-  updateSelectedPokemon: PropTypes.func.isRequired,
+  clearSearchText: PropTypes.func.isRequired,
+  onPokemonPress: PropTypes.func.isRequired,
+  onBack: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  const { searchPokemon: { searchText } } = state;
-  return {
-    searchText,
-    pokemons: searchPokemonModule.selectPokemons(state),
-  };
-};
+const mapStateToProps = state => ({
+  searchText: state.searchPokemon.searchText,
+  pokemons: searchPokemonModule.selectPokemons(state),
+});
+
 
 const mapDispatchToProps = {
   updateSearchText: searchPokemonModule.updateSearchText,
-  updateSelectedPokemon: searchPokemonModule.updateSelectedPokemon,
+  clearSearchText: searchPokemonModule.clearSearchText,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FindPokemonScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(FindPokemon);

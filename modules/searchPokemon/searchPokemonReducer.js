@@ -1,13 +1,8 @@
 import R from 'ramda';
-import {
-  UPDATE_SEARCH_TEXT,
-  UPDATE_SELECTED_POKEMON,
-  CLEAR_SELECTED_POKEMON,
-} from './searchPokemonActions';
+import { UPDATE_SEARCH_TEXT, CLEAR_SEARCH_TEXT } from './searchPokemonActions';
 
 const initialState = {
   searchText: '',
-  selectedPokemonId: null,
 };
 
 export default (state = initialState, action = {}) => {
@@ -15,10 +10,8 @@ export default (state = initialState, action = {}) => {
   switch (type) {
     case UPDATE_SEARCH_TEXT:
       return R.assoc('searchText', payload, state);
-    case UPDATE_SELECTED_POKEMON:
-      return R.assoc('selectedPokemonId', payload, state);
-    case CLEAR_SELECTED_POKEMON:
-      return R.assoc('selectedPokemonId', null, state);
+    case CLEAR_SEARCH_TEXT:
+      return R.assoc('searchText', '', state);
     default: return state;
   }
 };
