@@ -4,14 +4,14 @@ import {
 } from './catchPokemonActions';
 
 const initialState = {
-  selectedPokemonToAdd: undefined,
+  selectedPokemonToAddId: undefined,
 };
 
 export default (state = initialState, action = {}) => {
   const { type, payload } = action;
   switch (type) {
     case UPDATE_SELECTED_POKEMON_TO_ADD:
-      return R.assoc('selectedPokemonToAdd', payload, state);
+      return R.assoc('selectedPokemonToAddId', payload, state);
     default: return state;
   }
 };

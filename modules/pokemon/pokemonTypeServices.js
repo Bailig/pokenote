@@ -20,3 +20,10 @@ export const getDefenceScalar = R.curry((pokemonTypes, thisPokemonType) => {
     toPercent,
   )(attackScalar1);
 });
+
+export const assignPokemonTypeImageKey = R.curry((pokemonMoves, pokemonTypes, thisPokemonMove) => {
+  if (!thisPokemonMove) return undefined;
+  const pokemonMove = pokemonMoves[thisPokemonMove.id];
+  const pokemonType = pokemonTypes[pokemonMove.pokemonType.id];
+  return R.assoc('pokemonTypeImageKey', pokemonType.imageKey, thisPokemonMove);
+});

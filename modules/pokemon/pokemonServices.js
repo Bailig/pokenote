@@ -1,5 +1,6 @@
 import R from 'ramda';
-import { getDefenceScalar } from './pokemonTypeServices';
+import { getDefenceScalar, assignPokemonTypeImageKey } from './pokemonTypeServices';
+
 
 export const isVulnerableToType = R.curry((thisPokemonTypes, pokemonType) => R.pipe(
   getDefenceScalar(thisPokemonTypes),
@@ -42,4 +43,23 @@ export const assignDefenceTypeEffective = R.curry((pokemonTypes, thisPokemon) =>
   if (R.isNil(thisPokemon)) return undefined;
   const defenceTypeEffective = getDefenceTypeEffective(pokemonTypes, thisPokemon);
   return R.assoc('defenceTypeEffective', defenceTypeEffective, thisPokemon);
+});
+
+const getSelectedPokemonMove = R.curry((pokemonMoves, pokemonTypes, thisPokemonMoves) => (
+  R.pipe(
+    R.find(R.propEq('selected', true)),
+    assignPokemonTypeImageKey(pokemonMoves, pokemonTypes),
+  )(thisPokemonMoves)
+));
+
+const getSelectedPokemonMoves = R.curry((pokemonMoves, pokemonTypes, thisPokemon) => {
+  const getSelectedPokemonMoveFromPokemonMoves = getSelectedPokemonMove(pokemonMoves, pokemonTypes);
+  const quickMove = getSelectedPokemonMoveFromPokemonMoves(thisPokemon.quickMoves);
+  const cinematicMove = getSelectedPokemonMoveFromPokemonMoves(thisPokemon.cinematicMoves);
+  return [quickMove, cinematicMove];
+});
+
+export const assignSelectedPokemonMoves = R.curry((pokemonMoves, pokemonTypes, thisPokemon) => {
+  const selectedPokemonMoves = getSelectedPokemonMoves(pokemonMoves, pokemonTypes, thisPokemon);
+  return R.assoc('selectedPokemonMoves', selectedPokemonMoves, thisPokemon);
 });
