@@ -1,4 +1,3 @@
-import R from 'ramda';
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
@@ -6,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import { COLOR } from './commonStyles';
 import { SearchBarHeader, PlusButton } from './components';
-import * as catchPokemonModule from '../modules/catchPokemon';
 
 const CatchScreen = (props) => {
   const { navigation, catchPokemons } = props;
@@ -41,6 +39,7 @@ CatchScreen.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  catchPokemons: state.catchPokemon.catchPokemons,
 });
 
 const mapDispatchToProps = {

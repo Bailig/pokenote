@@ -21,7 +21,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const AddCatchPokemonScreen = ({ navigation, pokemon }) => {
+const AddCatchPokemonScreen = ({
+  navigation,
+  pokemon,
+  updateSelectedPokemonMove,
+}) => {
   const renderSelectedMoves = (pokemonMove, index) => (
     <PokemonMove pokemonMove={pokemonMove} key={index} />
   );
@@ -30,7 +34,13 @@ const AddCatchPokemonScreen = ({ navigation, pokemon }) => {
     <PokemonMove
       key={pokemonMove.id}
       pokemonMove={pokemonMove}
-      checkbox={<CheckBox checked={pokemonMove.selected} />}
+      onPokemonMoveSelect={updateSelectedPokemonMove}
+      checkbox={(
+        <CheckBox
+          checked={pokemonMove.selected}
+          onIconPress={() => updateSelectedPokemonMove(pokemonMove.id)}
+        />
+      )}
     />
   );
 
@@ -70,13 +80,15 @@ AddCatchPokemonScreen.propTypes = {
     quickMoves: PropTypes.array,
     cinematicMoves: PropTypes.array,
   }).isRequired,
+  updateSelectedPokemonMove: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  pokemon: catchPokemonModule.selectPokemonToAdd(state),
+  pokemon: catchPokemonModule.selectSelectedPokemon(state),
 });
 
 const mapDispatchToProps = {
+  updateSelectedPokemonMove: catchPokemonModule.updateSelectedPokemonMove,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddCatchPokemonScreen);

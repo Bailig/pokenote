@@ -12,14 +12,13 @@ export const REMOVE = 'againstPokemon/REMOVE';
 export const REMOVE_SUCCESS = 'againstPokemon/REMOVE_SUCCESS';
 export const REMOVE_FAIL = 'againstPokemon/REMOVE_FAIL';
 
-const fetchAgainstPokemonIds = async () => {
-  const defaultAgainstPokemonIds = new Array(6).fill(undefined);
+const fetchAgainstPokemonIdsFromAsyncStorage = async () => {
   const againstPokemonIds = JSON.parse(await AsyncStorage.getItem('againstPokemonIds'));
-  return R.defaultTo(defaultAgainstPokemonIds, againstPokemonIds);
+  return R.defaultTo(new Array(6).fill(undefined), againstPokemonIds);
 };
 
 const updateAgainstPokemonIds = async (index, pokemonId) => {
-  const againstPokemonIds = await fetchAgainstPokemonIds();
+  const againstPokemonIds = await fetchAgainstPokemonIdsFromAsyncStorage();
   const updatedAgainstPokemonIds = R.update(index, pokemonId, againstPokemonIds);
   await AsyncStorage.setItem('againstPokemonIds', JSON.stringify(updatedAgainstPokemonIds));
   return Promise.resolve(updatedAgainstPokemonIds);
@@ -30,7 +29,7 @@ export const updateAgainstPokemonIndex = index => ({ type: UPDATE_INDEX, payload
 export const fetchAgainstPokemon = () => async (dispatch) => {
   dispatch({ type: FETCH });
   try {
-    const againstPokemonIds = await fetchAgainstPokemonIds();
+    const againstPokemonIds = await fetchAgainstPokemonIdsFromAsyncStorage();
     dispatch({
       type: FETCH_SUCCESS,
       payload: againstPokemonIds,

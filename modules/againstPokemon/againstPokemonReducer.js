@@ -18,7 +18,7 @@ export default (state = initialState, action = {}) => {
       return R.assoc('againstPokemonIds', payload, state);
     case UPDATE_SUCCESS:
       return R.evolve({
-        againstPokemonIds: R.always(payload),
+        againstPokemonIds: R.update(payload.currentAgainstPokemonIndex, payload.selectedPokemonId),
         currentAgainstPokemonIndex: R.always(undefined),
       })(state);
     case UPDATE_INDEX:

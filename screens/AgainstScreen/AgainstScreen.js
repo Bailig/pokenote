@@ -16,12 +16,12 @@ const AgainstScreen = (props) => {
   } = props;
 
   const handleRenderRow = ({ item, index }) => {
-    const handleOnPress = () => {
+    const handlePress = () => {
       updateAgainstPokemonIndex(index);
       navigation.navigate('findPokemonToAgainst');
     };
-    if (!item) return <AddPokemonButton onPress={handleOnPress} />;
-    return <AgainstPokemonItem pokemon={item} onPress={handleOnPress} />;
+    if (!item) return <AddPokemonButton onPress={handlePress} />;
+    return <AgainstPokemonItem pokemon={item} onPress={handlePress} />;
   };
   handleRenderRow.propTypes = {
     item: PropTypes.shape().isRequired,

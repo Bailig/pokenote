@@ -1,11 +1,14 @@
 import R from 'ramda';
 import { FETCH_SUCCESS, UPDATE, FETCH_FAIL } from './pokemonActions';
 
-// reducer
 const initialState = {
   pokemons: undefined,
-  pokemonMoves: undefined,
+  fastMoves: undefined,
+  chargeMoves: undefined,
   pokemonTypes: undefined,
+  typeEffectives: undefined,
+  pokemonFastMoves: undefined,
+  pokemonChargeMoves: undefined,
   pokemonFetched: undefined,
 };
 

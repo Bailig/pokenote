@@ -1,28 +1,41 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 
-import {
-  assignPokemonTypeImageKey,
-  assignSelectedPokemonMoves,
-} from '../pokemon';
+import { mapTypes } from '../pokemon';
 
-export const selectPokemonToAdd = createSelector(
-  s => s.catchPokemon.selectedPokemonToAddId,
+export const selectCatchPokemons = createSelector(
+  s => s.catchPokemon.searchText,
+  s => s.catchPokemon.catchPokemons,
   s => s.pokemon.pokemons,
-  s => s.pokemon.pokemonMoves,
+  s => s.pokemon.fastMoves,
+  s => s.pokemon.chargeMoves,
   s => s.pokemon.pokemonTypes,
-  (id, pokemons, pokemonMoves, pokemonTypes) => {
-    if (!id || !pokemons || !pokemonMoves || !pokemonTypes) return undefined;
+  (searchText, catchPokemons, pokemons, fastMoves, chargeMoves, pokemonTypes) => {
+    if (!catchPokemons || !pokemons || !fastMoves || !chargeMoves || !pokemonTypes) return [];
+    if (!searchText) {
+      const assignMoveTypeImageKey = move => R.pipe(
+        R.prop('pokemonTypeId'),
+        R.prop(R.__, pokemonTypes),
+        R.prop('imageKey'),
+        R.assoc('typeImageKey', R.__, move),
+      )(move);
 
-    const pokemon = R.pipe(
-      R.prop(id),
-      assignSelectedPokemonMoves(pokemonMoves, pokemonTypes),
-    )(pokemons);
-
-    const assignPokemonTypeImageKeyForPokemonMove = assignPokemonTypeImageKey(pokemonMoves, pokemonTypes);
-    return R.evolve({
-      quickMoves: R.map(assignPokemonTypeImageKeyForPokemonMove),
-      cinematicMoves: R.map(assignPokemonTypeImageKeyForPokemonMove),
-    })(pokemon);
+      return R.map(catchPokemon => R.pipe(
+        R.prop('pokemonId'),
+        R.prop(R.__, pokemons),
+        mapTypes(pokemonTypes),
+        R.assoc('selectedFastMove', R.pipe(
+          R.prop('fastMoveId'),
+          R.prop(R.__, fastMoves),
+          assignMoveTypeImageKey,
+        )(catchPokemon)),
+        R.assoc('selectedChargeMove', R.pipe(
+          R.prop('chargeMoveId'),
+          R.prop(R.__, chargeMoves),
+          assignMoveTypeImageKey,
+        )(catchPokemon)),
+      )(catchPokemon))(catchPokemons);
+    }
+    return [];
   },
 );

@@ -1,23 +1,17 @@
 import { Selector } from 'redux-testkit';
 
-import * as testData from '../../data/testData';
+import * as testData from '../../data/testDataV2';
 import * as uut from './againstPokemonSelectors';
 
 describe('pokemon selectors', () => {
-  const defenceTypeEffective = testData.getDefenceTypeEffective();
-  const bulbasaur = testData.getPokemon();
-  const pokemons = testData.getPokemons();
-  const pokemonMoves = testData.getPokemonMoves();
-  const pokemonTypes = testData.getPokemonTypes();
+  const defenceTypeEffective = testData.getBulbasaurDefenceTypeEffective();
+  const bulbasaur = testData.getBulbasaur();
+  const data = testData.getAll();
 
   describe('selectAgainstPokemons()', () => {
     it('should select array of 6 undefined from pokemon state', () => {
       const state = {
-        pokemon: {
-          pokemons,
-          pokemonMoves,
-          pokemonTypes,
-        },
+        pokemon: data,
         againstPokemon: {
           againstPokemonIds: new Array(6).fill(undefined),
         },
@@ -28,11 +22,7 @@ describe('pokemon selectors', () => {
 
     it('should select bulbasaur with defenceTypeEffective from pokemon state', () => {
       const state = {
-        pokemon: {
-          pokemons,
-          pokemonMoves,
-          pokemonTypes,
-        },
+        pokemon: data,
         againstPokemon: {
           againstPokemonIds: ['BULBASAUR', undefined, undefined, undefined, undefined, undefined],
         },

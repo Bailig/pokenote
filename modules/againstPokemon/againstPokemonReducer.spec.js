@@ -10,7 +10,7 @@ describe('against pokemon reducer', () => {
       type: FETCH_SUCCESS,
       payload: againstPokemonIds,
     };
-    const result = { currentAgainstPokemonIndex: null, againstPokemonIds };
+    const result = { currentAgainstPokemonIndex: undefined, againstPokemonIds };
     Reducer(uut).expect(action).toReturnState(result);
   });
 
@@ -21,7 +21,7 @@ describe('against pokemon reducer', () => {
     };
     const result = {
       againstPokemonIds: [undefined, undefined, 'IVYSAUR', undefined, undefined, undefined],
-      currentAgainstPokemonIndex: null,
+      currentAgainstPokemonIndex: undefined,
     };
     Reducer(uut).expect(action).toReturnState(result);
   });

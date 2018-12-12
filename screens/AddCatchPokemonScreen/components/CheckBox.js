@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 
 export const CheckBox = props => (
   <DefaultCheckBox
+    title=""
     center
     checkedIcon="dot-circle-o"
     uncheckedIcon="circle-o"
