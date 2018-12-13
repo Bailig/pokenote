@@ -1,4 +1,3 @@
-import R from 'ramda';
 import { Selector } from 'redux-testkit';
 
 import * as uut from './searchPokemonSelectors';

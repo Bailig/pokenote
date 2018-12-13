@@ -34,4 +34,18 @@ describe('search pokemon selectors', () => {
       Selector(uut.selectCatchPokemons).expect(state).toReturn(result);
     });
   });
+
+  describe('selectDefaultFastMoveIdForPokemon()', () => {
+    it('should select default (best) fast move id', () => {
+      const state = { pokemon: allData };
+      Selector(uut.selectDefaultFastMoveIdForPokemon).expect(state, bulbasaur.id).toReturn('VINE_WHIP_FAST');
+    });
+  });
+
+  describe('selectDefaultChargeMoveIdForPokemon()', () => {
+    it('should select default (best) charge move id', () => {
+      const state = { pokemon: allData };
+      Selector(uut.selectDefaultChargeMoveIdForPokemon).expect(state, bulbasaur.id).toReturn('POWER_WHIP');
+    });
+  });
 });

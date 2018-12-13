@@ -1,12 +1,16 @@
 import R from 'ramda';
 import {
-  UPDATE_SELECTED_POKEMON_TO_ADD,
+  UPDATE_POKEMON_TO_ADD,
   FETCH_SUCCESS,
 } from './catchPokemonActions';
 
 const initialState = {
-  selectedPokemonId: undefined,
   catchPokemons: undefined,
+  pokemonToAdd: {
+    pokemonId: undefined,
+    fastMoveId: undefined,
+    chargeMoveId: undefined,
+  },
 };
 
 export default (state = initialState, action = {}) => {
@@ -14,8 +18,8 @@ export default (state = initialState, action = {}) => {
   switch (type) {
     case FETCH_SUCCESS:
       return R.assoc('catchPokemons', payload, state);
-    case UPDATE_SELECTED_POKEMON_TO_ADD:
-      return R.assoc('selectedPokemonToAddId', payload, state);
+    case UPDATE_POKEMON_TO_ADD:
+      return R.assocPath(['pokemonToAdd', 'pokemonId'], payload, state);
     default: return state;
   }
 };

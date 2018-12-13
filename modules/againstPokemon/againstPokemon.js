@@ -19,7 +19,6 @@ const getAgainstTypes = R.curry((pokemonTypes, typeEffectives) => R.pipe(
   R.map(e => mapAgainstType(pokemonTypes, e)),
   R.map(e => R.assoc('defenceScalar', R.prop('defenceScalar', e), R.prop('againstType', e))),
   R.values,
-  R.sortBy(R.prop('name')),
 )(typeEffectives));
 
 const isVulnerableToType = R.pipe(
@@ -32,6 +31,15 @@ const isResistantToType = R.pipe(
   R.lt(R.__, 100),
 );
 
+const sortVulnerableToTypes = R.sortWith([
+  R.descend(R.prop('defenceScalar')),
+  R.ascend(R.prop('name')),
+]);
+const sortResistantToTypes = R.sortWith([
+  R.ascend(R.prop('defenceScalar')),
+  R.ascend(R.prop('name')),
+]);
+
 const getDefenceTypeEffective = R.curry((pokemonTypes, typeEffectives, thisPokemon) => {
   const pokemonWithTypes = mapTypes(pokemonTypes, thisPokemon);
   const typeEffectives1 = getTypeEffectives(typeEffectives, 'pokemonType1', pokemonWithTypes);
@@ -40,11 +48,13 @@ const getDefenceTypeEffective = R.curry((pokemonTypes, typeEffectives, thisPokem
     const vulnerableToTypes = R.pipe(
       R.pickBy(isVulnerableToType),
       getAgainstTypes(pokemonTypes),
+      sortVulnerableToTypes,
     )(typeEffectives1);
 
     const resistantToTypes = R.pipe(
       R.pickBy(isResistantToType),
       getAgainstTypes(pokemonTypes),
+      sortResistantToTypes,
     )(typeEffectives1);
     return { vulnerableToTypes, resistantToTypes };
   }
@@ -66,11 +76,13 @@ const getDefenceTypeEffective = R.curry((pokemonTypes, typeEffectives, thisPokem
   const vulnerableToTypes = R.pipe(
     R.pickBy(isVulnerableToType),
     getAgainstTypes(pokemonTypes),
+    sortVulnerableToTypes,
   )(mergedTypeEffectives);
 
   const resistantToTypes = R.pipe(
     R.pickBy(isResistantToType),
     getAgainstTypes(pokemonTypes),
+    sortResistantToTypes,
   )(mergedTypeEffectives);
 
   return { vulnerableToTypes, resistantToTypes };

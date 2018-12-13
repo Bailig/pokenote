@@ -1,7 +1,5 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
-import { isTypeName } from '../pokemon/pokemonTypeServices';
-import { isPokemonTypeNameEqual, isPokemonNameIncludes } from '../pokemon/pokemonServices';
 
 
 export const selectPokemons = createSelector(
@@ -16,13 +14,39 @@ export const selectPokemons = createSelector(
         R.sortBy(R.prop('dex')),
       )(pokemons);
     }
-    const filteredPokemons = isTypeName(searchText, pokemonTypes)
-      ? R.pickBy(isPokemonTypeNameEqual(pokemonTypes, searchText), pokemons)
-      : R.pickBy(isPokemonNameIncludes(searchText), pokemons);
 
-    return R.pipe(
+    const sortByDex = R.pipe(
       R.values,
       R.sortBy(R.prop('dex')),
-    )(filteredPokemons);
+    );
+
+    const filteredTypeId = R.pipe(
+      R.pickBy(R.pipe(
+        R.prop('name'),
+        R.toLower,
+        R.equals(R.toLower(searchText)),
+      )),
+      R.keys,
+      R.head,
+    )(pokemonTypes);
+
+    if (R.isNil(filteredTypeId)) {
+      return R.pipe(
+        R.pickBy(R.pipe(
+          R.prop('name'),
+          R.toLower,
+          R.includes(R.toLower(searchText)),
+        )),
+        sortByDex,
+      )(pokemons);
+    }
+
+    return R.pipe(
+      R.pickBy(pokemon => R.either(
+        R.equals(pokemon.pokemonTypeId1),
+        R.equals(pokemon.pokemonTypeId2),
+      )(filteredTypeId)),
+      sortByDex,
+    )(pokemons);
   },
 );

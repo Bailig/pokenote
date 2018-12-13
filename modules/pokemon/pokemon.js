@@ -22,3 +22,29 @@ export const mapTypes = R.curry((pokemonTypes, thisPokemon) => R.pipe(
   mapType1(pokemonTypes),
   mapType2(pokemonTypes),
 )(thisPokemon));
+
+export const mapFastMoves = R.curry((fastMoves, pokemonFastMoves, thisPokemon) => R.pipe(
+  R.prop('id'),
+  R.propEq('pokemonId'),
+  R.pickBy(R.__, pokemonFastMoves),
+  R.map(R.pipe(
+    R.prop('fastMoveId'),
+    R.prop(R.__, fastMoves),
+  )),
+  R.values,
+  R.indexBy(R.prop('id')),
+  R.assoc('fastMoves', R.__, thisPokemon),
+)(thisPokemon));
+
+export const mapChargeMoves = R.curry((chargeMoves, pokemonChargeMoves, thisPokemon) => R.pipe(
+  R.prop('id'),
+  R.propEq('pokemonId'),
+  R.pickBy(R.__, pokemonChargeMoves),
+  R.map(R.pipe(
+    R.prop('chargeMoveId'),
+    R.prop(R.__, chargeMoves),
+  )),
+  R.values,
+  R.indexBy(R.prop('id')),
+  R.assoc('chargeMoves', R.__, thisPokemon),
+)(thisPokemon));

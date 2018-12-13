@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { AsyncStorage } from 'react-native';
+import { selectDefaultFastMoveIdForPokemon, selectDefaultChargeMoveIdForPokemon } from './catchPokemonSelectors';
 
 export const FETCH = 'catchPokemon/FETCH';
 export const FETCH_SUCCESS = 'catchPokemon/FETCH_SUCCESS';
@@ -7,7 +8,7 @@ export const FETCH_FAIL = 'catchPokemon/FETCH_FAIL';
 const ADD = 'catchPokemon/ADD';
 const ADD_SUCCESS = 'catchPokemon/ADD_SUCCESS';
 const ADD_FAIL = 'catchPokemon/ADD_FAIL';
-export const UPDATE_SELECTED_POKEMON_TO_ADD = 'catchPokemon/UPDATE_SELECTED_POKEMON_TO_ADD';
+export const UPDATE_POKEMON_TO_ADD = 'catchPokemon/UPDATE_POKEMON_TO_ADD';
 
 
 const fetchCatchPokemonFromAsyncStorage = async () => {
@@ -28,10 +29,23 @@ export const fetchCatchPokemon = () => async (dispatch) => {
   }
 };
 
-export const updateSelectedPokemonToAdd = pokemonId => ({
-  type: UPDATE_SELECTED_POKEMON_TO_ADD,
-  payload: pokemonId,
-});
+export const updatePokemonToAdd = ({ pokemonId, fastMiveId, chargeMoveId }) => (dispatch, getState) => {
+  const state = getState();
+  dispatch({
+    type: UPDATE_POKEMON_TO_ADD,
+    payload: {
+      pokemonId,
+      fastMoveId: R.defaultTo(
+        selectDefaultFastMoveIdForPokemon(state, pokemonId),
+        fastMiveId,
+      ),
+      chargeMoveId: R.defaultTo(
+        selectDefaultChargeMoveIdForPokemon(state, pokemonId),
+        chargeMoveId,
+      ),
+    },
+  });
+};
 
 export const addCatchPokemon = () => async (dispatch, getState) => {
 

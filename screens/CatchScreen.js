@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import { COLOR } from './commonStyles';
 import { SearchBarHeader, PlusButton } from './components';
+import * as catchPokemonModule from '../modules/catchPokemon';
 
 const CatchScreen = (props) => {
   const { navigation, catchPokemons } = props;
@@ -39,7 +40,7 @@ CatchScreen.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  catchPokemons: state.catchPokemon.catchPokemons,
+  catchPokemons: catchPokemonModule.selectCatchPokemons(state),
 });
 
 const mapDispatchToProps = {
