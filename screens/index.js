@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import * as appModule from '../modules/app';
 import * as pokemonModule from '../modules/pokemon';
 import * as againstPokemonModule from '../modules/againstPokemon';
+import * as catchPokemonModule from '../modules/catchPokemon';
 import AgainstScreen from './AgainstScreen';
 import AgainstMenuScreen from './AgainstMenuScreen';
 import FindPokemonToAgainstScreen from './FindPokemonToAgainstScreen';
@@ -22,10 +23,13 @@ const MeScreen = () => <View style={{ flex: 1 }}><Text>MeScreen</Text></View>;
 
 class Screens extends React.Component {
   componentWillMount() {
-    const { loadFont, fetchPokemon, fetchAgainstPokemon } = this.props;
+    const {
+      loadFont, fetchPokemon, fetchAgainstPokemon, fetchCatchPokemon,
+    } = this.props;
     loadFont();
     fetchPokemon();
     fetchAgainstPokemon();
+    fetchCatchPokemon();
   }
 
   render() {
@@ -114,6 +118,7 @@ Screens.propTypes = {
   loadFont: PropTypes.func.isRequired,
   fetchPokemon: PropTypes.func.isRequired,
   fetchAgainstPokemon: PropTypes.func.isRequired,
+  fetchCatchPokemon: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -125,6 +130,7 @@ const mapDispatchToProps = {
   loadFont: appModule.loadFont,
   fetchPokemon: pokemonModule.fetchPokemon,
   fetchAgainstPokemon: againstPokemonModule.fetchAgainstPokemon,
+  fetchCatchPokemon: catchPokemonModule.fetchCatchPokemon,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Screens);

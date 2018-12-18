@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
 
 export const PokemonMove = ({ pokemonMove, checkbox }) => {
   if (!pokemonMove) return <View style={styles.containerStyle} />;
-  const { pokemonTypeImageKey, name } = pokemonMove;
+  const { typeImageKey, name } = pokemonMove;
   return (
     <View style={styles.containerStyle}>
-      <Image source={pokemonTypeImages[pokemonTypeImageKey]} style={styles.imageStyle} />
+      <Image source={pokemonTypeImages[typeImageKey]} style={styles.imageStyle} />
       <Text style={styles.nameStyle}>{name}</Text>
       {checkbox}
     </View>
@@ -42,7 +42,7 @@ PokemonMove.defaultProps = {
 
 PokemonMove.propTypes = {
   pokemonMove: PropTypes.shape({
-    pokemonTypeImageKey: PropTypes.string,
+    typeImageKey: PropTypes.string,
     name: PropTypes.string,
   }),
   checkbox: PropTypes.element,

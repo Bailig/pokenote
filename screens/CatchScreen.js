@@ -10,7 +10,7 @@ import * as catchPokemonModule from '../modules/catchPokemon';
 const CatchScreen = (props) => {
   const { navigation, catchPokemons } = props;
 
-  const handleRenderRow = () => <View />;
+  const handleRenderRow = ({ item }) => console.log(item);
 
   return (
     <View style={{ flex: 1, backgroundColor: COLOR.highContrastLight }}>
@@ -35,7 +35,18 @@ CatchScreen.defaultProps = {
 };
 
 CatchScreen.propTypes = {
-  catchPokemons: PropTypes.arrayOf(PropTypes.object),
+  catchPokemons: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    selectedFastMove: PropTypes.shape({
+      name: PropTypes.string,
+      typeImageKey: PropTypes.string,
+    }),
+    selectedChargeMove: PropTypes.shape({
+      name: PropTypes.string,
+      typeImageKey: PropTypes.string,
+    }),
+  })),
   navigation: PropTypes.shape().isRequired,
 };
 

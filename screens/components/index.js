@@ -10,3 +10,4 @@ export * from './PokemonTypeImage';
 export * from './PlusButton';
 export * from './MenuScreenContainer';
 export * from './MenuButton';
+export * from './FloatingActionButton';

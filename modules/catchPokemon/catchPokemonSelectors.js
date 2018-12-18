@@ -3,6 +3,14 @@ import { createSelector } from 'reselect';
 
 import * as pokemonModule from '../pokemon';
 
+
+const assignMoveTypeImageKey = R.curry((pokemonTypes, move) => R.pipe(
+  R.prop('pokemonTypeId'),
+  R.prop(R.__, pokemonTypes),
+  R.prop('imageKey'),
+  R.assoc('typeImageKey', R.__, move),
+)(move));
+
 export const selectCatchPokemons = createSelector(
   s => s.catchPokemon.searchText,
   s => s.catchPokemon.catchPokemons,
@@ -12,29 +20,26 @@ export const selectCatchPokemons = createSelector(
   s => s.pokemon.pokemonTypes,
   (searchText, catchPokemons, pokemons, fastMoves, chargeMoves, pokemonTypes) => {
     if (!catchPokemons || !pokemons || !fastMoves || !chargeMoves || !pokemonTypes) return [];
-    if (!searchText) {
-      const assignMoveTypeImageKey = move => R.pipe(
-        R.prop('pokemonTypeId'),
-        R.prop(R.__, pokemonTypes),
-        R.prop('imageKey'),
-        R.assoc('typeImageKey', R.__, move),
-      )(move);
 
-      return R.map(catchPokemon => R.pipe(
-        R.prop('pokemonId'),
-        R.prop(R.__, pokemons),
-        pokemonModule.mapTypes(pokemonTypes),
-        R.assoc('selectedFastMove', R.pipe(
-          R.prop('fastMoveId'),
-          R.prop(R.__, fastMoves),
-          assignMoveTypeImageKey,
+    if (!searchText) {
+      return R.pipe(
+        R.map(catchPokemon => R.pipe(
+          R.prop('pokemonId'),
+          R.prop(R.__, pokemons),
+          pokemonModule.mapTypes(pokemonTypes),
+          R.assoc('selectedFastMove', R.pipe(
+            R.prop('fastMoveId'),
+            R.prop(R.__, fastMoves),
+            assignMoveTypeImageKey(pokemonTypes),
+          )(catchPokemon)),
+          R.assoc('selectedChargeMove', R.pipe(
+            R.prop('chargeMoveId'),
+            R.prop(R.__, chargeMoves),
+            assignMoveTypeImageKey(pokemonTypes),
+          )(catchPokemon)),
         )(catchPokemon)),
-        R.assoc('selectedChargeMove', R.pipe(
-          R.prop('chargeMoveId'),
-          R.prop(R.__, chargeMoves),
-          assignMoveTypeImageKey,
-        )(catchPokemon)),
-      )(catchPokemon))(catchPokemons);
+        R.values,
+      )(catchPokemons);
     }
     return [];
   },
@@ -94,5 +99,56 @@ export const selectDefaultChargeMoveIdForPokemon = createSelector(
       R.head,
       R.prop('id'),
     )(pokemon);
+  },
+);
+
+
+export const selectAddPokemon = createSelector(
+  s => s.catchPokemon.addPokemon,
+  s => s.pokemon.pokemons,
+  s => s.pokemon.pokemonFastMoves,
+  s => s.pokemon.pokemonChargeMoves,
+  s => s.pokemon.fastMoves,
+  s => s.pokemon.chargeMoves,
+  s => s.pokemon.pokemonTypes,
+  (addPokemon, pokemons, pokemonFastMoves,
+    pokemonChargeMoves, fastMoves, chargeMoves, pokemonTypes) => {
+    if (!addPokemon || !pokemons || !pokemonFastMoves || !pokemonChargeMoves
+      || !fastMoves || !chargeMoves || !pokemonTypes) return undefined;
+
+    const mapSelectedForMoves = R.pipe(
+      R.map(move => R.pipe(
+        R.prop('id'),
+        R.either(
+          R.equals(addPokemon.fastMoveId),
+          R.equals(addPokemon.chargeMoveId),
+        ),
+        R.assoc('selected', R.__, move),
+        assignMoveTypeImageKey(pokemonTypes),
+      )(move)),
+      R.values,
+      R.sortBy(R.prop('name')),
+    );
+
+    return R.pipe(
+      R.prop('pokemonId'),
+      R.prop(R.__, pokemons),
+      pokemonModule.mapFastMoves(fastMoves, pokemonFastMoves),
+      pokemonModule.mapChargeMoves(chargeMoves, pokemonChargeMoves),
+      R.evolve({
+        fastMoves: mapSelectedForMoves,
+        chargeMoves: mapSelectedForMoves,
+      }),
+      R.assoc('selectedFastMove', R.pipe(
+        R.prop('fastMoveId'),
+        R.prop(R.__, fastMoves),
+        assignMoveTypeImageKey(pokemonTypes),
+      )(addPokemon)),
+      R.assoc('selectedChargeMove', R.pipe(
+        R.prop('chargeMoveId'),
+        R.prop(R.__, chargeMoves),
+        assignMoveTypeImageKey(pokemonTypes),
+      )(addPokemon)),
+    )(addPokemon);
   },
 );

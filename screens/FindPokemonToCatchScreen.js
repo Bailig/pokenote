@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import FindPokemon from './containers/FindPokemon';
 import * as catchPokemonModule from '../modules/catchPokemon';
 
-const FindPokemonToCatchScreen = ({ navigation, updatePokemonToAdd }) => {
+const FindPokemonToCatchScreen = ({ navigation, updateAddPokemon }) => {
   const handlePokemonPress = (pokemonId) => {
-    updatePokemonToAdd(pokemonId);
+    updateAddPokemon(pokemonId);
     navigation.navigate('addCatchPokemon');
   };
   return (
@@ -20,11 +20,11 @@ const FindPokemonToCatchScreen = ({ navigation, updatePokemonToAdd }) => {
 
 FindPokemonToCatchScreen.propTypes = {
   navigation: PropTypes.shape().isRequired,
-  updatePokemonToAdd: PropTypes.func.isRequired,
+  updateAddPokemon: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
-  updatePokemonToAdd: catchPokemonModule.updatePokemonToAdd,
+  updateAddPokemon: catchPokemonModule.updateAddPokemon,
 };
 
 export default connect(null, mapDispatchToProps)(FindPokemonToCatchScreen);

@@ -1,28 +1,23 @@
 import React from 'react';
-import { TouchableHighlight, Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-import { COLOR, elevation } from '../commonStyles';
+import { COLOR } from '../commonStyles';
+import { FloatingActionButton } from './FloatingActionButton';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   containerStyle: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
     backgroundColor: COLOR.lowContrastDark,
-    justifyContent: 'center',
-    alignItems: 'center',
     position: 'absolute',
     bottom: 18,
     left: (SCREEN_WIDTH / 2) - 20,
-    ...elevation(6),
   },
 });
 
 export const DarkBackButton = props => (
-  <TouchableHighlight style={styles.containerStyle} {...props}>
+  <FloatingActionButton style={styles.containerStyle} {...props} size={40}>
     <Icon name="close" type="font-awesome" color={COLOR.highContrastLight} />
-  </TouchableHighlight>
+  </FloatingActionButton>
 );

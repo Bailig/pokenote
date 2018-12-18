@@ -48,4 +48,34 @@ describe('search pokemon selectors', () => {
       Selector(uut.selectDefaultChargeMoveIdForPokemon).expect(state, bulbasaur.id).toReturn('POWER_WHIP');
     });
   });
+
+  describe('selectAddPokemon()', () => {
+    it('should select default (best) charge move id', () => {
+      const state = {
+        pokemon: allData,
+        catchPokemon: {
+          addPokemon: {
+            pokemonId: bulbasaur.id,
+            fastMoveId: 'TACKLE_FAST',
+            chargeMoveId: 'SEED_BOMB',
+          },
+        },
+      };
+      const result = {
+        ...bulbasaur,
+        selectedFastMove: { ...fastMoves.TACKLE_FAST, typeImageKey: 'normal' },
+        selectedChargeMove: { ...chargeMoves.SEED_BOMB, typeImageKey: 'grass' },
+        fastMoves: [
+          { ...fastMoves.TACKLE_FAST, selected: true, typeImageKey: 'normal' },
+          { ...fastMoves.VINE_WHIP_FAST, selected: false, typeImageKey: 'grass' },
+        ],
+        chargeMoves: [
+          { ...chargeMoves.POWER_WHIP, selected: false, typeImageKey: 'grass' },
+          { ...chargeMoves.SEED_BOMB, selected: true, typeImageKey: 'grass' },
+          { ...chargeMoves.SLUDGE_BOMB, selected: false, typeImageKey: 'poison' },
+        ],
+      };
+      Selector(uut.selectAddPokemon).expect(state).toReturn(result);
+    });
+  });
 });
