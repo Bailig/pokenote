@@ -1,28 +1,19 @@
 import React from 'react';
 import {
-  View, Image, Text, StyleSheet, TouchableHighlight,
+  View, Text, StyleSheet, TouchableHighlight,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Divider } from 'react-native-elements';
 
-import pokemonImages from '../../../util/pokemonImages';
 import { PokemonTypeItem } from '.';
 import { COLOR, TEXT_STYLE } from '../../commonStyles';
+import { Card, PokemonAvatar } from '../../components';
 
 const styles = StyleSheet.create({
-  touchableContainerStyle: {
-    backgroundColor: COLOR.lowContrastLight,
-    borderRadius: 28,
-    marginBottom: 24,
-  },
   containerStyle: {
     flexDirection: 'row',
     padding: 8,
     alignItems: 'center',
-  },
-  pokemonImageStyle: {
-    height: 66,
-    width: 66,
   },
   defendeEffectiveContainerStyle: {
     flex: 1,
@@ -58,37 +49,38 @@ const styles = StyleSheet.create({
 });
 
 export const AgainstPokemonItem = ({ pokemon, ...props }) => (
-  <TouchableHighlight
-    style={styles.touchableContainerStyle}
-    underlayColor={COLOR.lowContrastDark}
-    {...props}
-  >
-    <View style={styles.containerStyle}>
-      <Image source={pokemonImages[pokemon.imageKey]} style={styles.pokemonImageStyle} />
+  <Card>
+    <TouchableHighlight
+      underlayColor={COLOR.lowContrastDark}
+      {...props}
+    >
+      <View style={styles.containerStyle}>
+        <PokemonAvatar imageKey={pokemon.imageKey} size={66} />
 
-      <View style={styles.defendeEffectiveContainerStyle}>
-        <View style={styles.defendeEffectiveRowStyle}>
-          <Text style={styles.textVulnerableToStyle}>Vulnerable to</Text>
-          <View style={styles.pokemonTypesContainerStyle}>
-            {
+        <View style={styles.defendeEffectiveContainerStyle}>
+          <View style={styles.defendeEffectiveRowStyle}>
+            <Text style={styles.textVulnerableToStyle}>Vulnerable to</Text>
+            <View style={styles.pokemonTypesContainerStyle}>
+              {
               pokemon.defenceTypeEffective.vulnerableToTypes
                 .map(t => <PokemonTypeItem {...t} key={t.id} textStyle={{ color: COLOR.red }} />)
-            }
+              }
+            </View>
           </View>
-        </View>
-        <Divider style={styles.dividerStyle} />
-        <View style={styles.defendeEffectiveRowStyle}>
-          <Text style={styles.textResistantToStyle}>Resistant to</Text>
-          <View style={styles.pokemonTypesContainerStyle}>
-            {
+          <Divider style={styles.dividerStyle} />
+          <View style={styles.defendeEffectiveRowStyle}>
+            <Text style={styles.textResistantToStyle}>Resistant to</Text>
+            <View style={styles.pokemonTypesContainerStyle}>
+              {
               pokemon.defenceTypeEffective.resistantToTypes
                 .map(t => <PokemonTypeItem {...t} key={t.id} textStyle={{ color: COLOR.green }} />)
             }
+            </View>
           </View>
         </View>
       </View>
-    </View>
-  </TouchableHighlight>
+    </TouchableHighlight>
+  </Card>
 );
 
 AgainstPokemonItem.propTypes = {

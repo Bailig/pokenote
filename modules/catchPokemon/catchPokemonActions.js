@@ -54,8 +54,9 @@ export const saveAddPokemon = () => async (dispatch, getState) => {
   dispatch({ type: SAVE_ADD_POKEMON });
   try {
     const { catchPokemon: { addPokemon } } = getState();
-    const catchPokemons = await fetchCatchPokemon();
+    const catchPokemons = await fetchCatchPokemonFromAsyncStorage();
     const id = uuid();
+
     const updatedCatchPokemons = R.pipe(
       R.assoc('id', id),
       R.assoc(id, R.__, catchPokemons),

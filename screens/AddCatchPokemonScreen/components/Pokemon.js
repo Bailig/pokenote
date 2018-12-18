@@ -1,18 +1,16 @@
 import React from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet,
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import { TEXT_STYLE, COLOR } from '../../commonStyles';
-import pokemonImages from '../../../util/pokemonImages';
+import { PokemonAvatar } from '../../components';
 
 const styles = StyleSheet.create({
   containerStyle: {
     height: 130,
     alignItems: 'center',
-  },
-  imageStyle: {
-    height: 104,
-    width: 140,
   },
   nameStyle: {
     ...TEXT_STYLE.subtitle1,
@@ -23,7 +21,7 @@ const styles = StyleSheet.create({
 
 export const Pokemon = ({ imageKey, name }) => (
   <View style={styles.containerStyle}>
-    <Image source={pokemonImages[imageKey]} style={styles.imageStyle} />
+    <PokemonAvatar imageKey={imageKey} size={104} />
     <Text style={styles.nameStyle}>{name}</Text>
   </View>
 );

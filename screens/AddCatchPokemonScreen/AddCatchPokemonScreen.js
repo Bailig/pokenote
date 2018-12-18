@@ -56,7 +56,7 @@ const AddCatchPokemonScreen = ({
 
   const handleSave = () => {
     saveAddPokemon();
-    navigation.pop(2);
+    navigation.pop(3);
   };
 
   return (

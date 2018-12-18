@@ -11,3 +11,5 @@ export * from './PlusButton';
 export * from './MenuScreenContainer';
 export * from './MenuButton';
 export * from './FloatingActionButton';
+export * from './Card';
+export * from './PokemonAvatar';

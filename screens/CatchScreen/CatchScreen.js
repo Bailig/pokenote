@@ -3,26 +3,25 @@ import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { COLOR } from './commonStyles';
-import { SearchBarHeader, PlusButton } from './components';
-import * as catchPokemonModule from '../modules/catchPokemon';
+import { COLOR } from '../commonStyles';
+import { SearchBarHeader, PlusButton } from '../components';
+import * as catchPokemonModule from '../../modules/catchPokemon';
+import { CatchPokemonItem } from './components';
 
 const CatchScreen = (props) => {
   const { navigation, catchPokemons } = props;
-
-  const handleRenderRow = ({ item }) => console.log(item);
 
   return (
     <View style={{ flex: 1, backgroundColor: COLOR.highContrastLight }}>
       <SearchBarHeader text="Pokemon to catch" />
       <FlatList
         data={catchPokemons}
-        renderItem={handleRenderRow}
+        renderItem={({ item }) => <CatchPokemonItem pokemon={item} />}
         keyExtractor={(item, index) => `${index}`}
         contentContainerStyle={{
           marginHorizontal: 20,
           paddingBottom: 60,
-          paddingTop: 100,
+          paddingTop: 149,
         }}
       />
       <PlusButton onPress={() => navigation.navigate('catchMenu')} />

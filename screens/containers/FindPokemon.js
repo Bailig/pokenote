@@ -3,7 +3,6 @@ import {
   View,
   FlatList,
   Text,
-  Image,
   TouchableHighlight,
   StyleSheet,
 } from 'react-native';
@@ -11,9 +10,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import * as searchPokemonModule from '../../modules/searchPokemon';
-import { SearchBarHeader, DarkBackButton } from '../components';
+import { SearchBarHeader, DarkBackButton, PokemonAvatar } from '../components';
 import { COLOR, TEXT_STYLE, elevation } from '../commonStyles';
-import images from '../../util/pokemonImages';
 
 const styles = StyleSheet.create({
   containerStyle: {
@@ -32,10 +30,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 12,
-  },
-  pokemonItemImageStyle: {
-    width: 104,
-    height: 104,
   },
   pokemonItemTextStyle: {
     ...TEXT_STYLE.subtitle1,
@@ -60,7 +54,7 @@ const FindPokemon = ({
       underlayColor={COLOR.lowContrastDark}
     >
       <View>
-        <Image style={styles.pokemonItemImageStyle} source={images[item.imageKey]} />
+        <PokemonAvatar imageKey={item.imageKey} size={104} />
         <Text style={styles.pokemonItemTextStyle} numberOfLines={1}>{item.name}</Text>
       </View>
     </TouchableHighlight>
